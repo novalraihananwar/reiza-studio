@@ -16,17 +16,17 @@ type DemoEntry = {
 
 const demos: Record<string, DemoEntry> = {
   travel: {
-    title: 'Website Travel — TravelBali',
+    title: 'Website Travel — Rehan Tour & Travel',
     desc: 'Platform booking travel modern dengan UI immersive',
-    iframeSrc: '/demos/travel/index.html',
+    iframeSrc: 'https://rehan-tour-travel-prototype.vercel.app',
     isStatic: true,
     tag: 'Travel & Wisata',
     gradient: 'from-sky-500 to-blue-600',
   },
   kos: {
-    title: 'Management Kos',
+    title: 'Management Kos — Kos Rehan',
     desc: 'Sistem manajemen kos digital dengan dashboard admin lengkap',
-    iframeSrc: '/demos/kos/index.html',
+    iframeSrc: 'https://kos-rehan-prototype.netlify.app',
     isStatic: true,
     tag: 'SaaS Dashboard',
     gradient: 'from-violet-500 to-purple-600',
@@ -34,27 +34,23 @@ const demos: Record<string, DemoEntry> = {
   coffee: {
     title: 'POS Coffee Shop — Rehan Café',
     desc: 'Aplikasi point-of-sale untuk coffee shop modern',
-    iframeSrc: 'http://localhost:3011',
-    isStatic: false,
-    localPort: 3011,
-    folderName: 'rehan coffe eatery/rehan-cafe',
+    iframeSrc: 'https://rehan-coffeshop-system-prototype.vercel.app',
+    isStatic: true,
     tag: 'Web Application',
     gradient: 'from-amber-500 to-orange-500',
   },
   properti: {
     title: 'Website Properti — Rehan Properti',
     desc: 'Portal properti premium dengan fitur pencarian canggih',
-    iframeSrc: 'http://localhost:3012',
-    isStatic: false,
-    localPort: 3012,
-    folderName: 'rehan properti',
+    iframeSrc: 'https://rehan-property-prototype.vercel.app',
+    isStatic: true,
     tag: 'Company Profile',
     gradient: 'from-teal-500 to-emerald-600',
   },
   ryando: {
     title: 'Portfolio Anime — Ryando',
     desc: 'Website portfolio kreatif dengan galeri artwork interaktif',
-    iframeSrc: '/demos/ryando/index.html',
+    iframeSrc: 'https://rytopen-landing-page.netlify.app',
     isStatic: true,
     tag: 'Creative Portfolio',
     gradient: 'from-pink-500 to-purple-600',
@@ -255,7 +251,7 @@ export default function DemoPage() {
           <div className="w-3 h-3 rounded-full bg-green-500/70" />
         </div>
         <div className="flex-1 bg-white/10 rounded-lg px-4 py-1.5 text-xs text-white/50 font-mono truncate max-w-sm mx-auto">
-          {demo.isStatic ? `reizastudio.com/demo/${slug}` : `localhost:${demo.localPort}`}
+          {demo.iframeSrc.startsWith('http') ? demo.iframeSrc.replace('https://', '') : `reizastudio.com/demo/${slug}`}
         </div>
       </div>
 
