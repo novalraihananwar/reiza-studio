@@ -44,7 +44,7 @@ const steps = [
     icon: TestTube2,
     step: '04',
     title: 'Revision & Testing',
-    desc: 'You can request unlimited revisions until you're satisfied. We also test performance, security, and responsiveness.',
+    desc: "You can request unlimited revisions until you're satisfied. We also test performance, security, and responsiveness.",
     gradient: 'from-rs-orange to-rs-coral',
     lightBg: 'bg-orange-50/60',
     iconBg: 'bg-gradient-to-br from-rs-orange to-rs-coral',
