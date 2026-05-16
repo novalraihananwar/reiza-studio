@@ -88,7 +88,7 @@ export default function ProcessSection() {
             <span className="gradient-text-sky">&amp; Effective</span>
           </h2>
           <p className="text-rs-slate text-base max-w-lg mx-auto font-inter leading-relaxed">
-            Our workflow is designed so you always know what's happening — transparent and collaborative every step of the way.
+            Our workflow is designed so you always know what&apos;s happening — transparent and collaborative every step of the way.
           </p>
         </motion.div>
 

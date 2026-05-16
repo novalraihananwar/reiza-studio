@@ -119,7 +119,7 @@ export default function CTASection() {
               transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-jakarta leading-tight mb-5 max-w-3xl mx-auto"
             >
-              Let's Bring Your<br />
+              Let&apos;s Bring Your<br />
               Brilliant Idea to Life<br />
               <span className="text-white/80">with Reiza Studio!</span>
             </motion.h2>
@@ -130,7 +130,7 @@ export default function CTASection() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-white/80 text-base sm:text-lg font-inter max-w-xl mx-auto mb-10 leading-relaxed"
             >
-              Free consultation, no commitment. Tell us your website idea and we'll make it a reality.
+              Free consultation, no commitment. Tell us your website idea and we&apos;ll make it a reality.
             </motion.p>
 
             <motion.div

@@ -159,11 +159,11 @@ export default function HumanSection() {
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-rs-navy font-jakarta leading-tight">
               More Than Developers —<br />
-              We're Your <span className="gradient-text-sky">Business Partner</span>
+              We&apos;re Your <span className="gradient-text-sky">Business Partner</span>
             </h2>
 
             <p className="text-base text-rs-slate font-inter leading-relaxed max-w-lg">
-              Reiza Studio is a creative digital studio combining deep technical expertise with modern design sensibility. We don't just build websites — we create digital experiences that drive real business growth.
+              Reiza Studio is a creative digital studio combining deep technical expertise with modern design sensibility. We don&apos;t just build websites — we create digital experiences that drive real business growth.
             </p>
 
             <div className="grid sm:grid-cols-2 gap-4">

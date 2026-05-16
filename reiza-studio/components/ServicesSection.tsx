@@ -174,7 +174,7 @@ export default function ServicesSection() {
         >
           <div className="w-16 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
           <p className="text-rs-slate font-inter text-sm">
-            Not sure which service is right for you? We're ready to help with a free consultation.
+            Not sure which service is right for you? We&apos;re ready to help with a free consultation.
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <motion.a
