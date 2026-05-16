@@ -118,6 +118,57 @@ function CoffeeMockupCard() {
   )
 }
 
+function CoffeeCustomerMockupCard() {
+  return (
+    <div className="w-full h-full bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl overflow-hidden flex flex-col">
+      {/* Header */}
+      <div className="bg-warm-white border-b border-amber-100 px-3 pt-3 pb-2">
+        <div className="flex items-center justify-between mb-1.5">
+          <div>
+            <p className="text-[7px] font-semibold text-amber-700 tracking-widest uppercase">Rehan Cafe & Eatery</p>
+            <p className="text-[10px] font-bold text-amber-900">Meja 1</p>
+          </div>
+          <span className="px-2 py-0.5 bg-amber-100 rounded-full text-[7px] font-semibold text-amber-700">🪑 Dine In</span>
+        </div>
+        {/* Category tabs */}
+        <div className="flex gap-1 overflow-hidden">
+          {['✨ Semua','☕ Kopi','🍵 Non-Kopi','🍝 Makanan'].map((c,i)=>(
+            <div key={c} className={`flex-shrink-0 px-2 py-0.5 rounded-full text-[6px] font-semibold ${i===0?'bg-amber-800 text-white':'bg-amber-100 text-amber-700'}`}>{c}</div>
+          ))}
+        </div>
+      </div>
+      {/* Menu Grid */}
+      <div className="flex-1 p-2 grid grid-cols-2 gap-1.5 overflow-hidden">
+        {[
+          {n:'Espresso',p:'25k',img:'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=80&h=60&fit=crop&q=60'},
+          {n:'Cappuccino',p:'32k',img:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=80&h=60&fit=crop&q=60'},
+          {n:'Croissant',p:'18k',img:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=80&h=60&fit=crop&q=60'},
+          {n:'Matcha Latte',p:'35k',img:'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=80&h=60&fit=crop&q=60'},
+        ].map(item=>(
+          <div key={item.n} className="bg-white rounded-xl overflow-hidden shadow-sm border border-amber-50">
+            <img src={item.img} alt={item.n} className="w-full h-10 object-cover" />
+            <div className="p-1.5">
+              <p className="text-[7px] font-semibold text-amber-900">{item.n}</p>
+              <div className="flex items-center justify-between mt-0.5">
+                <p className="text-[7px] font-bold text-amber-600">{item.p}</p>
+                <div className="w-4 h-4 rounded-full bg-amber-800 flex items-center justify-center text-white text-[8px] font-bold">+</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Cart bar */}
+      <div className="bg-amber-800 mx-2 mb-2 rounded-xl px-3 py-1.5 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[7px] font-bold text-amber-800">2</div>
+          <p className="text-[7px] text-white font-semibold">Lihat Keranjang</p>
+        </div>
+        <p className="text-[7px] font-bold text-amber-200">Rp 57.000</p>
+      </div>
+    </div>
+  )
+}
+
 function PropertyMockupCard() {
   return (
     <div className="w-full h-full bg-gradient-to-br from-emerald-50 to-teal-100 rounded-2xl overflow-hidden flex flex-col">
@@ -217,13 +268,22 @@ const portfolios = [
     link: '/demo/kos',
   },
   {
-    title: 'POS Coffee Shop',
-    desc: 'Aplikasi point-of-sale untuk coffee shop dengan interface cepat dan real-time.',
-    tag: 'Web Application',
+    title: 'POS Coffee Shop — Admin',
+    desc: 'Dashboard admin untuk kelola order masuk, status meja, inventori, dan laporan real-time.',
+    tag: 'POS Admin',
     color: 'from-amber-500 to-orange-500',
     lightColor: 'bg-amber-50',
     Mockup: CoffeeMockupCard,
     link: '/demo/coffee',
+  },
+  {
+    title: 'Menu Digital — Customer',
+    desc: 'Tampilan pelanggan via QR code di meja. Pesan, bayar, dan tracking pesanan langsung dari HP.',
+    tag: 'Customer View',
+    color: 'from-orange-400 to-amber-500',
+    lightColor: 'bg-orange-50',
+    Mockup: CoffeeCustomerMockupCard,
+    link: '/demo/coffee-customer',
   },
   {
     title: 'Website Properti',
