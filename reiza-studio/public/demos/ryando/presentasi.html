@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rytopen — Presentasi Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#07101e;
+  --navy2:#0c172a;
+  --navy3:#111f38;
+  --lav:#c4b5f4;
+  --lav2:rgba(196,181,244,.18);
+  --lav3:rgba(196,181,244,.08);
+  --blue:#4a7fff;
+  --accent:#7ea8ff;
+  --white:#f0eef8;
+  --w70:rgba(240,238,248,.7);
+  --w40:rgba(240,238,248,.4);
+  --w20:rgba(240,238,248,.2);
+  --w10:rgba(240,238,248,.1);
+  --line:rgba(196,181,244,.12);
+  --ff-d:'Cormorant Garamond',serif;
+  --ff-b:'Manrope',sans-serif;
+  --ff-j:'Noto Sans JP',sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html,body{height:100%;overflow:hidden;background:var(--navy);color:var(--white);font-family:var(--ff-b)}
+
+/* ─── GRAIN ─── */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:900;opacity:.022;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;animation:gr .4s steps(2) infinite}
+@keyframes gr{0%{transform:translate(0,0)}50%{transform:translate(-2%,-2%)}100%{transform:translate(2%,1%)}}
+
+/* ─── SLIDE ENGINE ─── */
+#deck{position:fixed;inset:0;overflow:hidden}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  padding:4rem 5rem;
+  opacity:0;pointer-events:none;
+  transform:translateX(60px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease);
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.slide.prev{opacity:0;transform:translateX(-60px)}
+
+/* ─── BG EFFECTS ─── */
+.bg-glow{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px)}
+.glow-a{width:500px;height:500px;background:radial-gradient(circle,rgba(74,127,255,.09),transparent);top:-10%;right:5%}
+.glow-b{width:400px;height:400px;background:radial-gradient(circle,rgba(196,181,244,.07),transparent);bottom:-5%;left:10%}
+.bg-grid{position:absolute;inset:0;background:linear-gradient(to right,rgba(196,181,244,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(196,181,244,.03) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;opacity:.5}
+
+/* ─── PROGRESS BAR ─── */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--lav),var(--accent));transition:width .4s var(--ease);z-index:800}
+#slide-num{position:fixed;bottom:1.6rem;right:2rem;font-size:.65rem;letter-spacing:.2em;color:var(--w40);font-family:var(--ff-j);z-index:800}
+
+/* ─── NAV BUTTONS ─── */
+.nav-btn{position:fixed;top:50%;z-index:800;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(7,16,30,.6);backdrop-filter:blur(12px);color:var(--w40);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;user-select:none}
+.nav-btn:hover{border-color:var(--lav);color:var(--lav);box-shadow:0 0 20px rgba(196,181,244,.15)}
+#btn-prev{left:1.5rem}
+#btn-next{right:1.5rem}
+.nav-btn:disabled{opacity:.25;pointer-events:none}
+
+/* ─── SLIDE DOTS ─── */
+#dots{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;z-index:800}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--w20);transition:all .3s;cursor:pointer}
+.dot.on{width:18px;border-radius:3px;background:var(--lav)}
+
+/* ─── ESC HINT ─── */
+#hint{position:fixed;top:1.4rem;right:2rem;font-size:.6rem;letter-spacing:.15em;color:var(--w20);font-family:var(--ff-j);z-index:800}
+
+/* ══════════════════
+   SLIDE COMPONENTS
+   ══════════════════ */
+.tag{display:inline-flex;align-items:center;padding:.25rem .75rem;border:1px solid var(--line);border-radius:100px;font-size:.6rem;letter-spacing:.2em;color:var(--lav);font-family:var(--ff-j);background:var(--lav3)}
+
+/* ─── SLIDE 1: COVER ─── */
+#s1{align-items:center;justify-content:center;text-align:center}
+.cover-eyebrow{font-family:var(--ff-j);font-size:.62rem;letter-spacing:.45em;color:var(--lav);margin-bottom:1.4rem;display:flex;align-items:center;gap:.6rem;justify-content:center}
+.cover-eyebrow::before,.cover-eyebrow::after{content:'';width:24px;height:1px;background:var(--lav);opacity:.4}
+.cover-title{font-family:var(--ff-d);font-size:clamp(4rem,9vw,8rem);font-weight:300;line-height:.9;letter-spacing:.05em;color:var(--white);margin-bottom:.6rem}
+.cover-title em{font-style:italic;color:var(--lav)}
+.cover-sub{font-family:var(--ff-d);font-size:clamp(.9rem,1.8vw,1.3rem);font-weight:300;letter-spacing:.3em;color:var(--w40);text-transform:uppercase;margin-bottom:2.2rem}
+.cover-tags{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap}
+.cover-line{width:60px;height:1px;background:linear-gradient(90deg,var(--lav),var(--accent));margin:2rem auto}
+.cover-presenter{font-size:.72rem;color:var(--w40);letter-spacing:.12em}
+
+/* ─── SLIDE HEADER SHARED ─── */
+.s-eyebrow{font-family:var(--ff-j);font-size:.58rem;letter-spacing:.4em;color:var(--lav);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.s-eyebrow::before{content:'';width:18px;height:1px;background:var(--lav);opacity:.5;flex-shrink:0}
+.s-heading{font-family:var(--ff-d);font-size:clamp(2rem,5vw,3.8rem);font-weight:300;line-height:1.05;color:var(--white);margin-bottom:1rem}
+.s-heading em{font-style:italic;color:var(--lav)}
+.s-body{font-size:.82rem;color:var(--w70);line-height:1.8;max-width:600px}
+
+/* ─── TWO-COL LAYOUT ─── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;flex:1;align-items:center}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;flex:1}
+
+/* ─── CARD ─── */
+.card{padding:1.6rem 1.5rem;border:1px solid var(--line);border-radius:10px;background:rgba(15,23,50,.55);backdrop-filter:blur(12px);transition:border-color .3s}
+.card:hover{border-color:rgba(196,181,244,.22)}
+.card-icon{font-size:1.6rem;margin-bottom:.8rem;display:block}
+.card-title{font-family:var(--ff-d);font-size:1.2rem;font-weight:400;color:var(--white);margin-bottom:.4rem}
+.card-body{font-size:.75rem;color:var(--w70);line-height:1.7}
+
+/* ─── FEATURE LIST ─── */
+.feat-list{display:flex;flex-direction:column;gap:.55rem;margin-top:.8rem}
+.feat-item{display:flex;align-items:flex-start;gap:.7rem;font-size:.78rem;color:var(--w70);line-height:1.5}
+.feat-item::before{content:'✦';color:var(--lav);font-size:.5rem;margin-top:.35rem;flex-shrink:0}
+.feat-item strong{color:var(--white);font-weight:500}
+
+/* ─── NUMBER BLOCK ─── */
+.num-row{display:flex;gap:2rem;margin-top:1.5rem}
+.num-block .num{font-family:var(--ff-d);font-size:2.4rem;font-weight:300;color:var(--lav);line-height:1}
+.num-block .lbl{font-size:.6rem;letter-spacing:.15em;color:var(--w40);font-family:var(--ff-j);margin-top:.2rem}
+
+/* ─── SECTION MOCKUP ─── */
+.mockup{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--navy2);height:100%}
+.mockup-bar{height:2.2rem;background:rgba(196,181,244,.04);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 1rem;gap:.4rem}
+.mb-dot{width:8px;height:8px;border-radius:50%}
+.mockup-content{padding:1.2rem;height:calc(100% - 2.2rem);display:flex;flex-direction:column;gap:.6rem}
+.mock-hero{height:40%;background:linear-gradient(135deg,rgba(74,127,255,.12),rgba(196,181,244,.06));border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line)}
+.mock-hero-txt{font-family:var(--ff-d);font-size:1.2rem;color:var(--w40);letter-spacing:.2em}
+.mock-row{display:flex;gap:.5rem;height:22%}
+.mock-card{flex:1;border-radius:6px;background:rgba(196,181,244,.04);border:1px solid var(--line)}
+.mock-card.tall{flex:0 0 30%;background:rgba(74,127,255,.06)}
+
+/* ─── PRICING ROW ─── */
+.price-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;flex:1;align-items:stretch}
+.price-card{padding:1.4rem 1.2rem;border:1px solid var(--line);border-radius:10px;background:rgba(15,23,50,.55);display:flex;flex-direction:column;gap:.4rem;transition:border-color .3s}
+.price-card:hover{border-color:rgba(196,181,244,.25)}
+.price-card.featured{border-color:rgba(196,181,244,.2);background:rgba(22,32,60,.7)}
+.price-badge{font-size:.55rem;letter-spacing:.2em;color:var(--lav);font-family:var(--ff-j);background:rgba(196,181,244,.08);padding:.18rem .5rem;border-radius:20px;width:fit-content}
+.price-name{font-family:var(--ff-d);font-size:1.05rem;font-weight:400;color:var(--white);margin-top:.3rem}
+.price-val{font-family:var(--ff-d);font-size:1.3rem;font-weight:300;color:var(--lav)}
+.price-small{font-size:.6rem;color:var(--w40);font-family:var(--ff-b);font-weight:300}
+.price-items{flex:1;margin-top:.5rem;display:flex;flex-direction:column;gap:.25rem}
+.price-item{font-size:.62rem;color:var(--w70);display:flex;align-items:baseline;gap:.3rem}
+.price-item::before{content:'—';color:rgba(196,181,244,.4);font-size:.55rem;flex-shrink:0}
+.price-cta{margin-top:.7rem;display:block;text-align:center;padding:.45rem;border:1px solid var(--line);border-radius:4px;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--w70);transition:all .3s}
+.price-cta:hover{border-color:var(--lav);color:var(--lav)}
+
+/* ─── PROTECT ROW ─── */
+.protect-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;flex:1}
+.protect-card{padding:1.2rem;border:1px solid var(--line);border-radius:10px;background:rgba(15,23,50,.55);display:flex;flex-direction:column;gap:.4rem}
+.protect-icon{font-size:1.4rem}
+.protect-title{font-size:.75rem;font-weight:600;color:var(--white)}
+.protect-body{font-size:.65rem;color:var(--w70);line-height:1.6}
+
+/* ─── COMPONENT CARDS ─── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;flex:1}
+.comp-card{padding:1.8rem 1.6rem;border:1px solid var(--line);border-radius:10px;background:rgba(15,23,50,.55);display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden}
+.comp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--lav),var(--accent))}
+.comp-num{font-family:var(--ff-d);font-size:3rem;font-weight:300;color:rgba(196,181,244,.08);line-height:1;position:absolute;top:.5rem;right:1rem}
+.comp-label{font-size:.6rem;letter-spacing:.25em;color:var(--lav);font-family:var(--ff-j)}
+.comp-name{font-family:var(--ff-d);font-size:1.4rem;font-weight:400;color:var(--white)}
+.comp-file{font-size:.6rem;color:var(--w40);font-family:'Courier New',monospace;background:rgba(196,181,244,.05);padding:.2rem .5rem;border-radius:4px;margin-top:.2rem;width:fit-content}
+.comp-feats{display:flex;flex-direction:column;gap:.35rem;margin-top:.4rem}
+.comp-feat{font-size:.68rem;color:var(--w70);display:flex;align-items:center;gap:.4rem}
+.comp-feat::before{content:'›';color:var(--lav);font-size:.7rem}
+
+/* ─── DELIVERABLES ─── */
+.deliv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;flex:1;align-items:start}
+.deliv-section{}
+.deliv-title{font-size:.6rem;letter-spacing:.25em;color:var(--lav);font-family:var(--ff-j);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}
+.deliv-list{display:flex;flex-direction:column;gap:.45rem}
+.deliv-item{display:flex;align-items:center;gap:.6rem;font-size:.75rem;color:var(--w70)}
+.deliv-item .di-check{width:18px;height:18px;border-radius:50%;background:rgba(196,181,244,.1);border:1px solid var(--lav);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:var(--lav);flex-shrink:0}
+
+/* ─── CLOSING ─── */
+#s12{align-items:center;justify-content:center;text-align:center}
+.close-title{font-family:var(--ff-d);font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:.95;color:var(--white);margin-bottom:.5rem}
+.close-title em{font-style:italic;color:var(--lav)}
+.close-sub{font-size:.85rem;color:var(--w40);letter-spacing:.08em;margin-bottom:2.2rem}
+.close-contact{display:inline-flex;flex-direction:column;gap:.5rem;padding:1.5rem 3rem;border:1px solid var(--line);border-radius:12px;background:rgba(15,23,50,.55);backdrop-filter:blur(12px);margin-bottom:1.5rem}
+.contact-row{display:flex;align-items:center;gap:.7rem;font-size:.78rem;color:var(--w70);justify-content:center}
+.contact-label{font-size:.55rem;letter-spacing:.2em;color:var(--lav);font-family:var(--ff-j)}
+.close-jp{font-family:var(--ff-j);font-size:.65rem;color:rgba(196,181,244,.25);letter-spacing:.3em;margin-top:1rem}
+
+/* ─── SECTION PROGRESS VISUAL ─── */
+.sections-visual{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap}
+.sv-item{padding:.3rem .8rem;border:1px solid var(--line);border-radius:20px;font-size:.6rem;color:var(--w40);font-family:var(--ff-j)}
+.sv-item.done{border-color:var(--lav);color:var(--lav);background:var(--lav3)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.slide.active .an1{animation:fadeUp .6s .05s var(--ease) both}
+.slide.active .an2{animation:fadeUp .6s .15s var(--ease) both}
+.slide.active .an3{animation:fadeUp .6s .25s var(--ease) both}
+.slide.active .an4{animation:fadeUp .6s .35s var(--ease) both}
+.slide.active .an5{animation:fadeUp .6s .45s var(--ease) both}
+.slide.active .an6{animation:fadeUp .6s .55s var(--ease) both}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .slide{padding:3rem 2.5rem}
+  .three-col,.price-row,.protect-grid,.comp-grid{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<div id="hint">F11 untuk fullscreen · ← → untuk navigasi</div>
+<div id="slide-num"></div>
+<button class="nav-btn" id="btn-prev" onclick="go(-1)">‹</button>
+<button class="nav-btn" id="btn-next" onclick="go(1)">›</button>
+<div id="dots"></div>
+
+<div id="deck">
+
+  <!-- ══ SLIDE 1 — COVER ══ -->
+  <div class="slide" id="s1">
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+    <div class="bg-grid"></div>
+    <div class="cover-eyebrow an1">Proposal Pembuatan Website</div>
+    <h1 class="cover-title an2">Ryto<em>pen</em></h1>
+    <p class="cover-sub an3">Studio Ilustrasi Anime Premium</p>
+    <div class="cover-line an3"></div>
+    <div class="cover-tags an4">
+      <span class="tag">Landing Page</span>
+      <span class="tag">Single File HTML</span>
+      <span class="tag">3 Komponen Premium</span>
+      <span class="tag">Proteksi Gambar</span>
+      <span class="tag">Mobile Ready</span>
+    </div>
+    <p class="cover-presenter an5" style="margin-top:2rem">Dibuat dengan ❤ untuk Rytopen Illustration Studio</p>
+  </div>
+
+  <!-- ══ SLIDE 2 — OVERVIEW ══ -->
+  <div class="slide" id="s2">
+    <div class="bg-glow glow-a"></div>
+    <div class="two-col" style="flex:1">
+      <div>
+        <div class="s-eyebrow an1">Gambaran Umum</div>
+        <h2 class="s-heading an2">Website <em>premium</em><br>untuk studio anime</h2>
+        <p class="s-body an3">Sebuah landing page modern dan elegan untuk Rytopen — studio ilustrasi anime yang fokus pada chibi art, cute moe, dan pastel fantasy. Dirancang setara standar Awwwards, siap digunakan langsung.</p>
+        <div class="num-row an4">
+          <div class="num-block"><div class="num">6</div><div class="lbl">Section Utama</div></div>
+          <div class="num-block"><div class="num">3</div><div class="lbl">Komponen Premium</div></div>
+          <div class="num-block"><div class="num">13</div><div class="lbl">Artwork Ditampilkan</div></div>
+          <div class="num-block"><div class="num">2</div><div class="lbl">Bahasa (ID/EN)</div></div>
+        </div>
+        <div class="sections-visual an5">
+          <span class="sv-item done">Hero</span>
+          <span class="sv-item done">Gallery</span>
+          <span class="sv-item done">Testimonial</span>
+          <span class="sv-item done">About</span>
+          <span class="sv-item done">Commission</span>
+          <span class="sv-item done">Social</span>
+        </div>
+      </div>
+      <div class="mockup an3" style="min-height:380px">
+        <div class="mockup-bar">
+          <div class="mb-dot" style="background:#ff5f57"></div>
+          <div class="mb-dot" style="background:#febc2e"></div>
+          <div class="mb-dot" style="background:#28c840"></div>
+          <span style="margin-left:.5rem;font-size:.55rem;color:rgba(196,181,244,.3);font-family:var(--ff-j)">rytopen.web</span>
+        </div>
+        <div class="mockup-content">
+          <div class="mock-hero"><span class="mock-hero-txt">RYTOPEN</span></div>
+          <div class="mock-row">
+            <div class="mock-card tall"></div>
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+          </div>
+          <div class="mock-row" style="height:14%">
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 3 — DESAIN VISUAL ══ -->
+  <div class="slide" id="s3">
+    <div class="bg-glow glow-b"></div>
+    <div class="s-eyebrow an1">Identitas Visual</div>
+    <h2 class="s-heading an2">Desain & <em>Estetika</em></h2>
+    <div class="three-col an3" style="flex:1">
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <div class="card-title">Palet Warna</div>
+        <div class="card-body">Dark blue night sebagai dominan. Lavender pastel sebagai aksen brand. Cold blue glow sebagai highlight.</div>
+        <div style="display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap">
+          <div style="width:28px;height:28px;border-radius:6px;background:#09111f;border:1px solid rgba(255,255,255,.1)" title="#09111f"></div>
+          <div style="width:28px;height:28px;border-radius:6px;background:#0c172a;border:1px solid rgba(255,255,255,.1)"></div>
+          <div style="width:28px;height:28px;border-radius:6px;background:#c4b5f4"></div>
+          <div style="width:28px;height:28px;border-radius:6px;background:#4a7fff"></div>
+          <div style="width:28px;height:28px;border-radius:6px;background:#7ea8ff"></div>
+          <div style="width:28px;height:28px;border-radius:6px;background:#f0eef8"></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔤</span>
+        <div class="card-title">Tipografi</div>
+        <div class="card-body">3 font dipadukan secara harmonis untuk hierarki yang jelas dan artistik.</div>
+        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.6rem">
+          <div><div style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--white)">Cormorant Garamond</div><div style="font-size:.55rem;color:var(--w40);font-family:var(--ff-j);letter-spacing:.1em">HEADING · DISPLAY</div></div>
+          <div><div style="font-family:'Manrope',sans-serif;font-size:.85rem;color:var(--w70)">Manrope</div><div style="font-size:.55rem;color:var(--w40);font-family:var(--ff-j);letter-spacing:.1em">BODY · UI</div></div>
+          <div><div style="font-family:'Noto Sans JP',sans-serif;font-size:.75rem;color:var(--lav)">Noto Sans JP · ノートサンズ</div><div style="font-size:.55rem;color:var(--w40);font-family:var(--ff-j);letter-spacing:.1em">ACCENT · LABEL</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="card-icon">✨</span>
+        <div class="card-title">Efek Visual</div>
+        <div class="feat-list">
+          <div class="feat-item"><strong>Grain texture</strong> — suasana film analog</div>
+          <div class="feat-item"><strong>Floating particles</strong> — dot melayang halus</div>
+          <div class="feat-item"><strong>Glow effect</strong> — cahaya biru lembut</div>
+          <div class="feat-item"><strong>Glassmorphism</strong> — blur transparan</div>
+          <div class="feat-item"><strong>Parallax hero</strong> — depth saat scroll</div>
+          <div class="feat-item"><strong>Scroll reveal</strong> — elemen muncul smooth</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 4 — FITUR UTAMA ══ -->
+  <div class="slide" id="s4">
+    <div class="bg-glow glow-a"></div>
+    <div class="s-eyebrow an1">Fitur Website</div>
+    <h2 class="s-heading an2">Yang Membuat <em>Berbeda</em></h2>
+    <div class="two-col an3" style="flex:1">
+      <div class="feat-list">
+        <div class="feat-item"><strong>Loading Screen Cinematic</strong> — animasi logo Rytopen elegan saat halaman pertama dibuka</div>
+        <div class="feat-item"><strong>Custom Cursor</strong> — kursor unik dengan ring animasi yang mengikuti gerakan mouse</div>
+        <div class="feat-item"><strong>Hero Parallax</strong> — gambar bergerak saat scroll untuk efek kedalaman sinematik</div>
+        <div class="feat-item"><strong>Language Switch ID/EN</strong> — semua teks berpindah bahasa dalam satu klik</div>
+        <div class="feat-item"><strong>Smooth Scroll Reveal</strong> — elemen muncul satu-satu saat di-scroll</div>
+        <div class="feat-item"><strong>Mobile Responsive</strong> — tampil sempurna di semua ukuran layar</div>
+        <div class="feat-item"><strong>Drag to Reorder</strong> — card gallery bisa digeser-geser untuk susun ulang</div>
+        <div class="feat-item"><strong>Fullscreen Modal</strong> — buka karya full-layar dengan navigasi prev/next</div>
+        <div class="feat-item"><strong>Thumbnail Dock</strong> — panel thumbnail bisa di-drag di bawah modal</div>
+        <div class="feat-item"><strong>Auto-scroll Testimonial</strong> — 3 kolom review bergerak otomatis</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem">
+        <div class="card">
+          <div style="font-size:.62rem;letter-spacing:.15em;color:var(--lav);font-family:var(--ff-j);margin-bottom:.5rem">TEKNOLOGI</div>
+          <div class="feat-list">
+            <div class="feat-item">Pure HTML, CSS, JavaScript — <strong>tanpa framework</strong></div>
+            <div class="feat-item">Google Fonts — loading <strong>cepat & stabil</strong></div>
+            <div class="feat-item">CSS Design System — <strong>konsisten</strong> seluruh halaman</div>
+            <div class="feat-item">Intersection Observer — <strong>performa tinggi</strong></div>
+            <div class="feat-item">Lazy loading gambar — <strong>hemat bandwidth</strong></div>
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(196,181,244,.2)">
+          <div style="font-size:.62rem;letter-spacing:.15em;color:var(--lav);font-family:var(--ff-j);margin-bottom:.5rem">HOSTING</div>
+          <p style="font-size:.75rem;color:var(--w70);line-height:1.7">Cukup upload 1 file <strong style="color:var(--white)">index.html</strong> + folder gambar. Kompatibel dengan Netlify, Vercel, cPanel, atau hosting manapun. <strong style="color:var(--lav)">Tidak perlu backend.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 5 — GALLERY SECTION ══ -->
+  <div class="slide" id="s5">
+    <div class="bg-glow glow-b"></div>
+    <div class="s-eyebrow an1">Section Gallery</div>
+    <h2 class="s-heading an2">Interactive <em>Bento</em> Gallery</h2>
+    <div class="two-col an3" style="flex:1">
+      <div>
+        <p class="s-body">Gallery menampilkan 13 artwork dalam layout bento dinamis — bisa difilter per kategori, diurutkan ulang dengan drag, dan dibuka fullscreen dengan satu klik.</p>
+        <div class="feat-list" style="margin-top:1rem">
+          <div class="feat-item"><strong>Bento Grid</strong> — layout berbeda-beda ukuran, terasa dinamis & premium</div>
+          <div class="feat-item"><strong>Filter Kategori</strong> — Fantasy, Chibi, Pastel Mood, Character Design</div>
+          <div class="feat-item"><strong>Drag to Reorder</strong> — user bisa susun ulang urutan karya</div>
+          <div class="feat-item"><strong>Click → Modal</strong> — gambar membesar fullscreen dengan animasi spring</div>
+          <div class="feat-item"><strong>Draggable Dock</strong> — thumbnail tilt di bawah modal, bisa dipindah</div>
+          <div class="feat-item"><strong>Horizontal Showcase</strong> — strip semua karya auto-scroll di bawah grid</div>
+          <div class="feat-item"><strong>Hover Overlay</strong> — judul & kategori muncul smooth saat hover</div>
+        </div>
+        <div style="margin-top:1.2rem;display:flex;gap:.4rem;flex-wrap:wrap">
+          <span class="tag">13 Artwork</span>
+          <span class="tag">4 Kategori</span>
+          <span class="tag">Drag & Drop</span>
+          <span class="tag">Fullscreen Modal</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-auto-rows:70px;gap:5px;align-content:start">
+        <div style="grid-column:span 1;grid-row:span 3;border-radius:7px;background:linear-gradient(135deg,rgba(196,181,244,.1),rgba(74,127,255,.08));border:1px solid var(--line)"></div>
+        <div style="grid-column:span 2;grid-row:span 2;border-radius:7px;background:linear-gradient(135deg,rgba(74,127,255,.1),rgba(196,181,244,.06));border:1px solid var(--line)"></div>
+        <div style="grid-column:span 1;grid-row:span 2;border-radius:7px;background:rgba(196,181,244,.05);border:1px solid var(--line)"></div>
+        <div style="grid-column:span 1;grid-row:span 2;border-radius:7px;background:rgba(74,127,255,.06);border:1px solid var(--line)"></div>
+        <div style="grid-column:span 2;grid-row:span 2;border-radius:7px;background:linear-gradient(135deg,rgba(196,181,244,.08),transparent);border:1px solid var(--line)"></div>
+        <div style="grid-column:span 1;grid-row:span 3;border-radius:7px;background:rgba(126,168,255,.06);border:1px solid var(--line)"></div>
+        <div style="grid-column:span 1;grid-row:span 2;border-radius:7px;background:rgba(196,181,244,.04);border:1px solid var(--line)"></div>
+        <div style="grid-column:span 1;grid-row:span 2;border-radius:7px;background:rgba(74,127,255,.05);border:1px solid var(--line)"></div>
+        <div style="display:flex;gap:5px;grid-column:span 3;justify-content:center;align-items:center;padding:.3rem 0">
+          <div style="width:28px;height:28px;border-radius:5px;background:rgba(196,181,244,.15);border:1px solid rgba(196,181,244,.3);flex-shrink:0;transform:rotate(-13deg)"></div>
+          <div style="width:28px;height:28px;border-radius:5px;background:rgba(74,127,255,.15);border:1px solid rgba(74,127,255,.25);flex-shrink:0;transform:rotate(11deg)"></div>
+          <div style="width:28px;height:28px;border-radius:5px;background:rgba(196,181,244,.1);flex-shrink:0;border:2px solid rgba(255,255,255,.5);transform:translateY(-6px) scale(1.2)"></div>
+          <div style="width:28px;height:28px;border-radius:5px;background:rgba(126,168,255,.12);flex-shrink:0;transform:rotate(-10deg)"></div>
+          <div style="width:28px;height:28px;border-radius:5px;background:rgba(196,181,244,.08);flex-shrink:0;transform:rotate(13deg)"></div>
+          <div style="font-size:.5rem;color:var(--w40);letter-spacing:.05em;margin-left:.3rem;font-family:var(--ff-j)">Draggable Dock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 6 — TESTIMONIALS ══ -->
+  <div class="slide" id="s6">
+    <div class="bg-glow glow-a"></div>
+    <div class="two-col" style="flex:1">
+      <div>
+        <div class="s-eyebrow an1">Section Testimonial</div>
+        <h2 class="s-heading an2">Social <em>Proof</em><br>yang Elegan</h2>
+        <p class="s-body an3">3 kolom review klien yang bergerak otomatis ke atas — persis seperti yang digunakan website-website SaaS premium dunia. Paused saat di-hover.</p>
+        <div class="feat-list an4" style="margin-top:1rem">
+          <div class="feat-item"><strong>3 Kolom Auto-scroll</strong> — kecepatan berbeda tiap kolom (15s, 19s, 17s)</div>
+          <div class="feat-item"><strong>Fade Mask</strong> — efek fade atas-bawah agar terasa mengalir</div>
+          <div class="feat-item"><strong>9 Review Klien</strong> — konten realistis dalam Bahasa Indonesia</div>
+          <div class="feat-item"><strong>Pause on Hover</strong> — berhenti saat kursor di atas kolom</div>
+          <div class="feat-item"><strong>Infinite Loop</strong> — item digandakan agar animasi mulus tanpa jeda</div>
+        </div>
+        <div class="an5" style="margin-top:1.2rem;display:flex;gap:.4rem;flex-wrap:wrap">
+          <span class="tag">component 1.txt</span>
+          <span class="tag">Framer Motion → CSS</span>
+        </div>
+      </div>
+      <div class="an3" style="display:flex;gap:1rem;max-height:360px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent,black 20%,black 80%,transparent);mask-image:linear-gradient(to bottom,transparent,black 20%,black 80%,transparent)">
+        <div style="display:flex;flex-direction:column;gap:.6rem;flex:1">
+          <div class="card" style="flex-shrink:0"><div style="display:flex;gap:2px;margin-bottom:.4rem">★★★★★</div><p style="font-size:.68rem;color:var(--w70);line-height:1.6">"Rytopen bikin chibi OC aku jadi super cute! Detail-nya bagus banget."</p><div style="margin-top:.6rem;font-size:.65rem;font-weight:500;color:var(--white)">Mikayla R.</div><div style="font-size:.55rem;color:var(--lav);font-family:var(--ff-j)">Chibi Commission</div></div>
+          <div class="card" style="flex-shrink:0"><div style="display:flex;gap:2px;margin-bottom:.4rem">★★★★★</div><p style="font-size:.68rem;color:var(--w70);line-height:1.6">"The pastel fantasy aesthetic for my character is absolutely dreamy!"</p><div style="margin-top:.6rem;font-size:.65rem;font-weight:500;color:var(--white)">Stella M.</div><div style="font-size:.55rem;color:var(--lav);font-family:var(--ff-j)">Character Design</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.6rem;flex:1;margin-top:1.5rem">
+          <div class="card" style="flex-shrink:0"><div style="display:flex;gap:2px;margin-bottom:.4rem">★★★★★</div><p style="font-size:.68rem;color:var(--w70);line-height:1.6">"VTuber design buat debut aku jadi makin percaya diri. Recommended!"</p><div style="margin-top:.6rem;font-size:.65rem;font-weight:500;color:var(--white)">AkuNeko_</div><div style="font-size:.55rem;color:var(--lav);font-family:var(--ff-j)">VTuber Design</div></div>
+          <div class="card" style="flex-shrink:0"><div style="display:flex;gap:2px;margin-bottom:.4rem">★★★★★</div><p style="font-size:.68rem;color:var(--w70);line-height:1.6">"Artwork for merch came out perfect. Delivery was ahead of schedule!"</p><div style="margin-top:.6rem;font-size:.65rem;font-weight:500;color:var(--white)">Reza T.</div><div style="font-size:.55rem;color:var(--lav);font-family:var(--ff-j)">Commercial Use</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 7 — COMMISSION ══ -->
+  <div class="slide" id="s7">
+    <div class="bg-glow glow-b"></div>
+    <div class="s-eyebrow an1">Section Commission</div>
+    <h2 class="s-heading an2">Pricing yang <em>Jelas</em> & Kompetitif</h2>
+    <div class="price-row an3">
+      <div class="price-card">
+        <div class="price-badge">スターター</div>
+        <div class="price-name">Chibi</div>
+        <div class="price-val">Rp 85.000<br><span class="price-small">/ karakter</span></div>
+        <div class="price-items">
+          <div class="price-item">Full chibi illustration</div>
+          <div class="price-item">Flat color / cel shading</div>
+          <div class="price-item">Simple background</div>
+          <div class="price-item">2 revisions</div>
+          <div class="price-item">Delivery 3–5 hari</div>
+        </div>
+        <div class="price-cta">Order via WA</div>
+      </div>
+      <div class="price-card">
+        <div class="price-badge">スタンダード</div>
+        <div class="price-name">Half Body</div>
+        <div class="price-val">Rp 175.000<br><span class="price-small">/ karakter</span></div>
+        <div class="price-items">
+          <div class="price-item">Half body illustration</div>
+          <div class="price-item">Full shading & lighting</div>
+          <div class="price-item">Mid-detail background</div>
+          <div class="price-item">3 revisions</div>
+          <div class="price-item">Delivery 5–7 hari</div>
+        </div>
+        <div class="price-cta">Order via WA</div>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">プレミアム ★</div>
+        <div class="price-name">Full Illustration</div>
+        <div class="price-val">Rp 350.000<br><span class="price-small">/ karakter</span></div>
+        <div class="price-items">
+          <div class="price-item">Full body illustration</div>
+          <div class="price-item">Detailed shading & FX</div>
+          <div class="price-item">Full complex background</div>
+          <div class="price-item">Unlimited revisions</div>
+          <div class="price-item">PNG + PSD source</div>
+        </div>
+        <div class="price-cta">Order via WA</div>
+      </div>
+      <div class="price-card">
+        <div class="price-badge">ビジネス</div>
+        <div class="price-name">Commercial</div>
+        <div class="price-val">Rp 750.000+<br><span class="price-small">/ project</span></div>
+        <div class="price-items">
+          <div class="price-item">Commercial license</div>
+          <div class="price-item">VTuber character sheet</div>
+          <div class="price-item">Merch / NFT / Brand</div>
+          <div class="price-item">Full source files</div>
+          <div class="price-item">Priority slot</div>
+        </div>
+        <div class="price-cta">Inquire via WA</div>
+      </div>
+    </div>
+    <p class="an4" style="font-size:.68rem;color:var(--w40);margin-top:1rem;text-align:center">Setiap card menggunakan <strong style="color:var(--lav)">Spotlight Card Effect</strong> — border & background glow mengikuti kursor mouse secara real-time</p>
+  </div>
+
+  <!-- ══ SLIDE 8 — PROTEKSI GAMBAR ══ -->
+  <div class="slide" id="s8">
+    <div class="bg-glow glow-a"></div>
+    <div class="s-eyebrow an1">Sistem Keamanan</div>
+    <h2 class="s-heading an2">Proteksi Karya <em>Original</em></h2>
+    <p class="s-body an2">Semua artwork OG dilindungi dari pengambilan paksa melalui sistem multi-layer yang berjalan di browser. Tidak ada tombol download.</p>
+    <div class="protect-grid an3">
+      <div class="protect-card">
+        <div class="protect-icon">🖱️</div>
+        <div class="protect-title">Right-Click Block</div>
+        <div class="protect-body">Klik kanan di area gambar langsung dicegah. Gambar langsung blur hitam selama 0.9 detik sebagai peringatan visual.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">🚫</div>
+        <div class="protect-title">Drag Block</div>
+        <div class="protect-body">Gambar tidak bisa di-drag ke desktop atau tab lain. Intercepted sebelum browser memproses drag event.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">⌨️</div>
+        <div class="protect-title">Shortcut Block</div>
+        <div class="protect-body">Ctrl+S, Cmd+S, Ctrl+U diblokir. PrintScreen menyebabkan semua gambar blur gelap seketika.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">📵</div>
+        <div class="protect-title">Mobile Protection</div>
+        <div class="protect-body">Long-press di iOS/Android tidak memunculkan opsi "Save Image". Touch callout dinonaktifkan.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">🖨️</div>
+        <div class="protect-title">Print Block</div>
+        <div class="protect-body">Jika halaman dicetak (Ctrl+P), semua gambar muncul hitam + blur. Muncul pesan copyright.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">🛡️</div>
+        <div class="protect-title">Shield Overlay</div>
+        <div class="protect-body">Setiap gambar ditutup div transparan sehingga tidak bisa diinteraksi langsung. pointer-events:none pada semua img.</div>
+      </div>
+      <div class="protect-card">
+        <div class="protect-icon">👁️</div>
+        <div class="protect-title">Tab Switch Blur</div>
+        <div class="protect-body">Saat tab tidak aktif (screen capture tool), semua gambar otomatis blur. Kembali normal saat tab aktif lagi.</div>
+      </div>
+      <div class="protect-card" style="border-color:rgba(196,181,244,.2);background:rgba(22,32,60,.7)">
+        <div class="protect-icon">🔔</div>
+        <div class="protect-title">Toast Notifikasi</div>
+        <div class="protect-body">Setiap percobaan download memunculkan notifikasi:<br><em style="color:var(--lav)">🔒 Artwork dilindungi · © Rytopen</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 9 — 3 KOMPONEN ══ -->
+  <div class="slide" id="s9">
+    <div class="bg-glow glow-b"></div>
+    <div class="s-eyebrow an1">Komponen Premium</div>
+    <h2 class="s-heading an2">3 Komponen <em>Terintegrasi</em></h2>
+    <div class="comp-grid an3">
+      <div class="comp-card">
+        <div class="comp-num">01</div>
+        <div class="comp-label">COMPONENT 1.TXT</div>
+        <div class="comp-name">Testimonials Column</div>
+        <div class="comp-file">testimonials-columns-1.tsx</div>
+        <p style="font-size:.68rem;color:var(--w70);line-height:1.6;margin-top:.4rem">3 kolom review yang scroll ke atas secara infinite, dengan fade mask elegan di atas dan bawah.</p>
+        <div class="comp-feats">
+          <div class="comp-feat">Infinite vertical scroll animation</div>
+          <div class="comp-feat">Staggered column speeds</div>
+          <div class="comp-feat">Framer Motion → CSS pure</div>
+          <div class="comp-feat">Pause on hover</div>
+          <div class="comp-feat">Duplicate items for seamless loop</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">02</div>
+        <div class="comp-label">COMPONENT 2.TXT</div>
+        <div class="comp-name">Spotlight Card</div>
+        <div class="comp-file">spotlight-card.tsx</div>
+        <p style="font-size:.68rem;color:var(--w70);line-height:1.6;margin-top:.4rem">Card dengan glow border & background yang mengikuti posisi kursor mouse secara real-time.</p>
+        <div class="comp-feats">
+          <div class="comp-feat">Mouse-tracking spotlight glow</div>
+          <div class="comp-feat">Border-only mask technique</div>
+          <div class="comp-feat">Card-relative coordinates (FIXED)</div>
+          <div class="comp-feat">CSS mask-composite: exclude</div>
+          <div class="comp-feat">Works cross-browser</div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-num">03</div>
+        <div class="comp-label">COMPONENT 3.TXT</div>
+        <div class="comp-name">Interactive Bento Gallery</div>
+        <div class="comp-file">interactive-bento-gallery.tsx</div>
+        <p style="font-size:.68rem;color:var(--w70);line-height:1.6;margin-top:.4rem">Gallery bento interaktif dengan drag reorder, fullscreen modal, dan draggable dock thumbnail.</p>
+        <div class="comp-feats">
+          <div class="comp-feat">Bento grid with dynamic spans</div>
+          <div class="comp-feat">Drag-to-reorder cards</div>
+          <div class="comp-feat">Spring entrance animation</div>
+          <div class="comp-feat">Fullscreen modal (GalleryModal)</div>
+          <div class="comp-feat">Draggable thumbnail dock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 10 — RESPONSIVE ══ -->
+  <div class="slide" id="s10">
+    <div class="bg-glow glow-a"></div>
+    <div class="two-col" style="flex:1">
+      <div>
+        <div class="s-eyebrow an1">Responsivitas</div>
+        <h2 class="s-heading an2">Tampil Sempurna<br>di <em>Semua</em> Layar</h2>
+        <p class="s-body an3">Website dirancang mobile-first. Semua section menyesuaikan layout secara otomatis berdasarkan ukuran layar tanpa mengorbankan estetika.</p>
+        <div class="feat-list an4" style="margin-top:1.2rem">
+          <div class="feat-item"><strong>Desktop (1200px+)</strong> — full 4-kolom bento, 3-kolom testimonial, 4-kolom commission</div>
+          <div class="feat-item"><strong>Tablet (768px–1024px)</strong> — 3-kolom bento, 2-kolom testimonial, layout about single</div>
+          <div class="feat-item"><strong>Mobile (&lt;768px)</strong> — 2-kolom bento, 1-kolom testimonial, hamburger menu</div>
+          <div class="feat-item"><strong>Mobile (&lt;480px)</strong> — full-width cards, vertikal social links</div>
+        </div>
+        <div class="an5" style="margin-top:1.2rem;display:flex;gap:.5rem">
+          <span class="tag">4 Breakpoint</span>
+          <span class="tag">CSS Grid Fluid</span>
+          <span class="tag">Touch-friendly</span>
+        </div>
+      </div>
+      <div class="an3" style="display:flex;gap:1rem;align-items:flex-end;justify-content:center">
+        <!-- Desktop mockup -->
+        <div style="width:200px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--navy2);flex-shrink:0">
+          <div style="height:10px;background:rgba(196,181,244,.06);border-bottom:1px solid var(--line)"></div>
+          <div style="padding:.5rem;display:flex;flex-direction:column;gap:.3rem">
+            <div style="height:50px;border-radius:4px;background:rgba(74,127,255,.08);border:1px solid var(--line)"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.2rem">
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.06);grid-row:span 2"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.04);grid-column:span 2"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.04)"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.04);grid-column:span 2"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(74,127,255,.06)"></div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:.5rem;color:var(--w40);padding:.3rem;font-family:var(--ff-j)">Desktop</div>
+        </div>
+        <!-- Tablet mockup -->
+        <div style="width:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--navy2);flex-shrink:0">
+          <div style="height:8px;background:rgba(196,181,244,.06);border-bottom:1px solid var(--line)"></div>
+          <div style="padding:.4rem;display:flex;flex-direction:column;gap:.25rem">
+            <div style="height:40px;border-radius:4px;background:rgba(74,127,255,.08);border:1px solid var(--line)"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.2rem">
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.06);grid-row:span 2"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.04);grid-column:span 2"></div>
+              <div style="height:22px;border-radius:3px;background:rgba(196,181,244,.04);grid-column:span 2"></div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:.5rem;color:var(--w40);padding:.3rem;font-family:var(--ff-j)">Tablet</div>
+        </div>
+        <!-- Mobile mockup -->
+        <div style="width:65px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--navy2);flex-shrink:0">
+          <div style="height:6px;background:rgba(196,181,244,.06);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center"><div style="width:16px;height:2px;border-radius:2px;background:rgba(196,181,244,.2)"></div></div>
+          <div style="padding:.4rem;display:flex;flex-direction:column;gap:.25rem">
+            <div style="height:32px;border-radius:4px;background:rgba(74,127,255,.08);border:1px solid var(--line)"></div>
+            <div style="height:18px;border-radius:3px;background:rgba(196,181,244,.06)"></div>
+            <div style="height:18px;border-radius:3px;background:rgba(196,181,244,.04)"></div>
+            <div style="height:18px;border-radius:3px;background:rgba(196,181,244,.05)"></div>
+          </div>
+          <div style="text-align:center;font-size:.5rem;color:var(--w40);padding:.3rem;font-family:var(--ff-j)">Mobile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 11 — DELIVERABLES ══ -->
+  <div class="slide" id="s11">
+    <div class="bg-glow glow-b"></div>
+    <div class="s-eyebrow an1">Yang Diserahkan</div>
+    <h2 class="s-heading an2">Paket <em>Lengkap</em> & Siap Pakai</h2>
+    <div class="deliv-grid an3" style="flex:1">
+      <div>
+        <div class="deliv-section">
+          <div class="deliv-title">FILE & ASET</div>
+          <div class="deliv-list">
+            <div class="deliv-item"><div class="di-check">✓</div>1 file <strong>index.html</strong> — seluruh website dalam satu file</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Folder <strong>character/</strong> — 9 gambar karakter terorganisir</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Folder <strong>chibi/</strong> — 4 gambar chibi artwork</div>
+            <div class="deliv-item"><div class="di-check">✓</div>File <strong>presentasi.html</strong> — slide ini</div>
+          </div>
+        </div>
+        <div class="deliv-section" style="margin-top:1.5rem">
+          <div class="deliv-title">FITUR YANG AKTIF</div>
+          <div class="deliv-list">
+            <div class="deliv-item"><div class="di-check">✓</div>Loading screen cinematic + animasi logo</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Custom cursor animasi + hover effect</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Interactive Bento Gallery (drag, filter, modal)</div>
+            <div class="deliv-item"><div class="di-check">✓</div>3-kolom auto-scroll testimonials</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Commission cards dengan spotlight glow</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Language switch ID / EN</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="deliv-section">
+          <div class="deliv-title">KEAMANAN & PERLINDUNGAN</div>
+          <div class="deliv-list">
+            <div class="deliv-item"><div class="di-check">✓</div>Right-click block + blur protection</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Drag protection</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Keyboard shortcut block (Ctrl+S, dll)</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Print protection (@media print)</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Mobile touch callout disabled</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Toast notification saat ada percobaan</div>
+          </div>
+        </div>
+        <div class="deliv-section" style="margin-top:1.5rem">
+          <div class="deliv-title">CARA PAKAI</div>
+          <div class="deliv-list">
+            <div class="deliv-item"><div class="di-check">✓</div>Buka <strong>index.html</strong> di browser — langsung jalan</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Upload ke Netlify / Vercel / cPanel gratis</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Ganti nomor WA di kode (628999999999)</div>
+            <div class="deliv-item"><div class="di-check">✓</div>Tambah link sosmed yang sesuai</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SLIDE 12 — CLOSING ══ -->
+  <div class="slide" id="s12">
+    <div class="bg-glow glow-a"></div>
+    <div class="bg-glow glow-b"></div>
+    <div class="bg-grid"></div>
+    <div class="cover-eyebrow an1">Terima Kasih</div>
+    <h2 class="close-title an2">Siap untuk <em>Launch</em>?</h2>
+    <p class="close-sub an3">Website Rytopen siap digunakan. Tinggal hosting & go live.</p>
+    <div class="close-contact an4">
+      <div class="contact-row">
+        <span>💬</span>
+        <div>
+          <div class="contact-label">COMMISSION & PERTANYAAN</div>
+          <div style="font-size:.82rem;color:var(--white)">WhatsApp · rytopen.art@gmail.com</div>
+        </div>
+      </div>
+      <div style="height:1px;background:var(--line);margin:.3rem 0"></div>
+      <div class="contact-row">
+        <span>📱</span>
+        <div>
+          <div class="contact-label">FOLLOW</div>
+          <div style="font-size:.82rem;color:var(--white)">Instagram · Facebook · X / Twitter</div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-tags an5">
+      <span class="tag">Landing Page ✓</span>
+      <span class="tag">3 Komponen ✓</span>
+      <span class="tag">Proteksi OG ✓</span>
+      <span class="tag">Mobile Ready ✓</span>
+      <span class="tag">Bahasa ID/EN ✓</span>
+    </div>
+    <p class="close-jp an6">りとぺん · アニメイラストスタジオ · 2024</p>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const totalSlides=slides.length;
+let cur=0;
+
+// Build dots
+const dotsEl=document.getElementById('dots');
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function goTo(n){
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('prev');
+  setTimeout(()=>slides[cur].classList.remove('prev'),600);
+  cur=Math.max(0,Math.min(n,totalSlides-1));
+  slides[cur].classList.add('active');
+  // Update UI
+  document.getElementById('progress').style.width=((cur+1)/totalSlides*100)+'%';
+  document.getElementById('slide-num').textContent=(cur+1)+' / '+totalSlides;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.getElementById('btn-prev').disabled=cur===0;
+  document.getElementById('btn-next').disabled=cur===totalSlides-1;
+}
+
+function go(dir){goTo(cur+dir)}
+
+// Init
+goTo(0);
+
+// Keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);
+  if(e.key==='Home')goTo(0);
+  if(e.key==='End')goTo(totalSlides-1);
+});
+
+// Touch swipe
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=tx-e.changedTouches[0].clientX;
+  if(Math.abs(dx)>50)go(dx>0?1:-1);
+},{passive:true});
+</script>
+</body>
+</html>

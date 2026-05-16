@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rytopen — Anime Illustration Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   DESIGN SYSTEM — single source of truth
+   ════════════════════════════════════════ */
+:root{
+  /* Surface */
+  --c-page:   #09111f;
+  --c-surface: rgba(18,26,50,0.6);
+  --c-surface-alt: rgba(14,21,42,0.85);
+  --c-grid:   #0d1628;
+
+  /* Border */
+  --c-line:   rgba(196,181,244,0.1);
+  --c-line-soft: rgba(196,181,244,0.06);
+  --c-line-hover: rgba(196,181,244,0.22);
+
+  /* Text */
+  --c-text:   #f0eef8;
+  --c-text-70: rgba(240,238,248,0.70);
+  --c-text-40: rgba(240,238,248,0.40);
+  --c-text-20: rgba(240,238,248,0.20);
+
+  /* Brand */
+  --c-lav:    #c4b5f4;
+  --c-lav-50: rgba(196,181,244,0.50);
+  --c-lav-15: rgba(196,181,244,0.15);
+  --c-lav-06: rgba(196,181,244,0.06);
+  --c-blue:   #4a7fff;
+  --c-blue-15: rgba(74,127,255,0.15);
+  --c-accent: #7ea8ff;
+
+  /* Typography */
+  --ff-disp: 'Cormorant Garamond', Georgia, serif;
+  --ff-body: 'Manrope', sans-serif;
+  --ff-jp:   'Noto Sans JP', sans-serif;
+
+  /* Scale */
+  --text-hero:   clamp(3.8rem,9vw,7.5rem);
+  --text-h1:     clamp(2.2rem,5vw,3.8rem);
+  --text-h2:     clamp(1.8rem,3.5vw,2.8rem);
+  --text-h3:     clamp(1.2rem,2vw,1.6rem);
+  --text-body:   0.875rem;
+  --text-sm:     0.78rem;
+  --text-xs:     0.68rem;
+  --text-label:  0.60rem;
+
+  /* Spacing */
+  --sp-1: 0.5rem;  --sp-2: 1rem;   --sp-3: 1.5rem;
+  --sp-4: 2rem;    --sp-6: 3rem;   --sp-8: 4rem;
+  --sp-12: 6rem;   --sp-16: 8rem;
+
+  /* Radius — consistent across all components */
+  --r-sm: 4px;   --r-md: 8px;
+  --r-lg: 12px;  --r-xl: 16px;
+  --r-pill: 100px;
+
+  /* Easing */
+  --ease: cubic-bezier(0.16,1,0.3,1);
+  --ease-smooth: cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--c-page);color:var(--c-text);font-family:var(--ff-body);font-size:var(--text-body);font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none}
+body.loading{overflow:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;height:auto;
+  -webkit-user-drag:none;user-drag:none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;user-select:none;
+  pointer-events:none;
+}
+/* Block print — artworks appear black on print */
+@media print{
+  body::before{content:'© Rytopen — Reproduction is prohibited.';position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#333;z-index:99999;background:#fff}
+  img{filter:blur(40px) brightness(0)!important;opacity:0!important}
+}
+button{cursor:none;border:none;background:none;font-family:inherit;color:inherit}
+ul{list-style:none}
+
+/* ─── CURSOR ─── */
+#cursor,#cursor-ring{position:fixed;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%)}
+#cursor{width:7px;height:7px;background:var(--c-lav);z-index:9999;mix-blend-mode:difference;transition:width .3s var(--ease),height .3s var(--ease)}
+#cursor-ring{width:34px;height:34px;border:1px solid var(--c-lav-50);z-index:9998;transition:width .4s var(--ease),height .4s var(--ease),border-color .3s}
+body.hovering #cursor{width:12px;height:12px}
+body.hovering #cursor-ring{width:50px;height:50px;border-color:rgba(126,168,255,0.45)}
+
+/* ─── GRAIN ─── */
+#grain{position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;animation:grain .5s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-2%,-3%)}50%{transform:translate(3%,1%)}75%{transform:translate(-1%,3%)}100%{transform:translate(2%,-1%)}}
+
+/* ─── PARTICLES ─── */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.particle{position:absolute;border-radius:50%;animation:pfloat linear infinite;opacity:0}
+@keyframes pfloat{0%{transform:translateY(100vh) translateX(0) scale(.5);opacity:0}10%{opacity:1}90%{opacity:.4}100%{transform:translateY(-10vh) translateX(var(--drift)) scale(1.2);opacity:0}}
+
+/* ─── LOADER ─── */
+#loader{position:fixed;inset:0;background:#05080f;z-index:9995;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s var(--ease),transform .8s var(--ease)}
+#loader.hide{opacity:0;transform:translateY(-16px);pointer-events:none}
+.loader-logo{font-family:var(--ff-disp);font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;letter-spacing:.25em;color:transparent;background:linear-gradient(135deg,var(--c-text) 0%,var(--c-lav) 50%,var(--c-accent) 100%);-webkit-background-clip:text;background-clip:text;opacity:0;animation:logoIn 1.8s var(--ease) forwards}
+@keyframes logoIn{0%{opacity:0;letter-spacing:.6em;filter:blur(12px)}40%{opacity:1}100%{opacity:1;letter-spacing:.25em;filter:blur(0)}}
+.loader-jp{font-family:var(--ff-jp);font-size:var(--text-label);color:var(--c-lav-50);letter-spacing:.4em;margin-top:.8rem;animation:fadeUp 1.8s .4s var(--ease) both}
+.loader-bar{width:140px;height:1px;background:var(--c-line);margin-top:var(--sp-6);overflow:hidden;animation:fadeIn .5s .5s both}
+.loader-fill{height:100%;width:0;background:linear-gradient(90deg,var(--c-lav),var(--c-accent));animation:barFill 2s .3s var(--ease-smooth) forwards}
+@keyframes barFill{to{width:100%}}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:var(--sp-3) var(--sp-6);display:flex;align-items:center;justify-content:space-between;transition:background .4s,padding .3s,border-color .4s}
+nav.scrolled{background:rgba(5,8,15,0.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:var(--sp-2) var(--sp-6);border-bottom:1px solid var(--c-line-soft)}
+.nav-logo{font-family:var(--ff-disp);font-size:1.45rem;font-weight:400;letter-spacing:.15em}
+.nav-logo em{color:var(--c-lav);font-style:normal}
+.nav-links{display:flex;gap:var(--sp-4);align-items:center}
+.nav-link{font-size:var(--text-label);font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--c-text-70);position:relative;transition:color .3s}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;right:100%;height:1px;background:var(--c-lav);transition:right .35s var(--ease)}
+.nav-link:hover{color:var(--c-text)}
+.nav-link:hover::after{right:0}
+.lang-sw{display:flex;align-items:center;gap:.3rem;font-size:var(--text-label);border:1px solid var(--c-line);border-radius:var(--r-pill);padding:.3rem .75rem;cursor:none;transition:border-color .3s}
+.lang-sw:hover{border-color:var(--c-lav-50)}
+.lang-sw button{font-size:var(--text-label);color:var(--c-text-40);transition:color .3s;padding:0;cursor:none}
+.lang-sw button.on{color:var(--c-lav)}
+.lang-sw i{color:var(--c-line)}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px}
+.nav-burger span{display:block;width:20px;height:1px;background:var(--c-text-70);transition:transform .3s}
+
+/* ─── HERO ─── */
+#hero{position:relative;width:100%;height:100vh;overflow:hidden;display:flex;align-items:flex-end;padding:0 var(--sp-6) var(--sp-8)}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;opacity:.42;animation:hZoom 22s ease-in-out infinite alternate}
+@keyframes hZoom{0%{transform:scale(1.04)}100%{transform:scale(1.11)}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(175deg,rgba(5,8,15,.25) 0%,rgba(5,8,15,.05) 35%,rgba(5,8,15,0) 55%,rgba(5,8,15,.9) 100%),linear-gradient(90deg,rgba(5,8,15,.55) 0%,transparent 55%)}
+.hero-glow{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(74,127,255,.1) 0%,transparent 70%);top:45%;left:40%;transform:translate(-50%,-50%);animation:gPulse 7s ease-in-out infinite;pointer-events:none}
+@keyframes gPulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}}
+.hero-content{position:relative;z-index:2;max-width:660px;animation:fadeUp 1.2s .2s var(--ease) both}
+.hero-eyebrow{font-family:var(--ff-jp);font-size:var(--text-label);letter-spacing:.45em;color:var(--c-lav);text-transform:uppercase;margin-bottom:var(--sp-2);display:flex;align-items:center;gap:.8rem}
+.hero-eyebrow::before{content:'';flex-shrink:0;width:28px;height:1px;background:var(--c-lav);opacity:.5}
+.hero-title{font-family:var(--ff-disp);font-size:var(--text-hero);font-weight:300;line-height:.92;color:var(--c-text);margin-bottom:.4rem;letter-spacing:.02em}
+.hero-title em{font-style:italic;color:var(--c-lav)}
+.hero-studio{font-family:var(--ff-disp);font-size:clamp(1rem,2vw,1.35rem);font-weight:300;letter-spacing:.32em;color:var(--c-text-70);text-transform:uppercase;margin-bottom:var(--sp-2)}
+.hero-body{font-size:var(--text-sm);color:var(--c-text-40);max-width:380px;line-height:1.85;margin-bottom:var(--sp-4)}
+.hero-btns{display:flex;gap:var(--sp-2);flex-wrap:wrap}
+/* Buttons — normalized */
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-size:var(--text-xs);font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:none;transition:all .38s var(--ease);border-radius:var(--r-sm);padding:.8rem 2rem;position:relative;overflow:hidden}
+.btn-pri{background:linear-gradient(135deg,rgba(74,127,255,.2),rgba(196,181,244,.15));border:1px solid var(--c-lav-50);color:var(--c-text)}
+.btn-pri::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,127,255,.3),rgba(196,181,244,.2));opacity:0;transition:opacity .38s}
+.btn-pri:hover{border-color:var(--c-lav);transform:translateY(-2px);box-shadow:0 12px 32px rgba(74,127,255,.15)}
+.btn-pri:hover::before{opacity:1}
+.btn-ghost{border:1px solid rgba(240,238,248,.14);color:var(--c-text-70)}
+.btn-ghost:hover{border-color:rgba(240,238,248,.32);color:var(--c-text);transform:translateY(-2px)}
+.hero-scroll{position:absolute;right:var(--sp-6);bottom:var(--sp-4);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--c-text-40);font-size:var(--text-label);letter-spacing:.25em;font-family:var(--ff-jp);animation:fadeIn 2s 1.8s both}
+.scroll-line{width:1px;height:56px;background:linear-gradient(to bottom,transparent,var(--c-lav-50));animation:scLine 2s ease-in-out infinite}
+@keyframes scLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── SECTION SHARED ─── */
+section{position:relative;z-index:2}
+.s-pad{padding:var(--sp-16) var(--sp-6)}
+.s-label{font-family:var(--ff-jp);font-size:var(--text-label);letter-spacing:.4em;color:var(--c-lav);text-transform:uppercase;display:flex;align-items:center;gap:.75rem;margin-bottom:var(--sp-2)}
+.s-label::before{content:'';width:22px;height:1px;background:var(--c-lav);opacity:.5;flex-shrink:0}
+.s-title{font-family:var(--ff-disp);font-size:var(--text-h1);font-weight:300;line-height:1.1;color:var(--c-text)}
+.s-title em{font-style:italic;color:var(--c-lav)}
+.s-desc{font-size:var(--text-sm);color:var(--c-text-40);line-height:1.85;margin-top:var(--sp-2);max-width:340px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--c-line),transparent);margin:0 var(--sp-6)}
+
+/* ─── GALLERY ─── */
+#gallery{padding:var(--sp-16) var(--sp-6) var(--sp-8)}
+.gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-4);flex-wrap:wrap}
+.cat-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:var(--sp-4)}
+.cat-tab{padding:.45rem 1.1rem;border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:var(--text-label);font-weight:400;letter-spacing:.1em;color:var(--c-text-40);cursor:none;transition:all .28s;background:transparent}
+.cat-tab:hover,.cat-tab.on{border-color:var(--c-lav-50);color:var(--c-lav);background:var(--c-lav-06)}
+
+/* ── Bento Grid (Interactive Bento Gallery — component 3.txt) ── */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:88px;gap:10px;grid-auto-flow:dense}
+.bc1r3{grid-column:span 1;grid-row:span 3}
+.bc2r2{grid-column:span 2;grid-row:span 2}
+.bc1r2{grid-column:span 1;grid-row:span 2}
+.bc2r3{grid-column:span 2;grid-row:span 3}
+.bcard{
+  position:relative;overflow:hidden;
+  border-radius:var(--r-lg);
+  background:var(--c-surface);
+  border:1px solid var(--c-line-soft);
+  cursor:none;
+  /* entrance */
+  opacity:0;transform:translateY(22px) scale(.96);
+  transition:opacity .55s var(--ease),transform .55s var(--ease),border-color .35s,box-shadow .35s;
+  user-select:none;
+}
+.bcard.in{opacity:1;transform:none}
+.bcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .65s var(--ease),filter .45s}
+.bcard:hover img{transform:scale(1.06);filter:brightness(.8) saturate(1.1)}
+.bcard:hover{border-color:var(--c-line-hover);box-shadow:0 16px 48px rgba(0,0,0,.45)}
+.bcard-ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:var(--sp-2) var(--sp-2) calc(var(--sp-2) + 2px);opacity:0;transition:opacity .3s}
+.bcard:hover .bcard-ov{opacity:1}
+.bcard-ov-bg{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,8,15,.88) 0%,rgba(5,8,15,.28) 55%,transparent 100%)}
+.bcard-title{position:relative;font-family:var(--ff-disp);font-size:1.05rem;font-weight:400;color:var(--c-text)}
+.bcard-cat{position:relative;font-size:var(--text-label);letter-spacing:.16em;color:var(--c-lav);font-family:var(--ff-jp);margin-top:.15rem}
+/* drag states */
+.bcard.dragging{opacity:.35;transform:scale(.96);transition:none;z-index:10}
+.bcard.drag-over{border-color:var(--c-lav-50);box-shadow:0 0 0 2px var(--c-lav-15)}
+/* Shield — sits above img (pointer-events:none) and captures all mouse/touch events */
+.img-shield{position:absolute;inset:0;z-index:3;cursor:none;-webkit-user-drag:none}
+.hscroll-item{position:relative}
+.hscroll-item .img-shield{z-index:2}
+
+/* Horizontal scroll strip */
+.hscroll{margin-top:var(--sp-8);overflow:hidden}
+.hscroll-lbl{font-family:var(--ff-jp);font-size:var(--text-label);letter-spacing:.35em;color:var(--c-text-20);text-transform:uppercase;margin-bottom:var(--sp-2)}
+.hscroll-track{display:flex;gap:10px;animation:hscr 38s linear infinite;width:max-content}
+.hscroll-track:hover{animation-play-state:paused}
+@keyframes hscr{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.hscroll-item{flex-shrink:0;width:185px;height:255px;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--c-line-soft);cursor:none;transition:border-color .3s,transform .35s var(--ease)}
+.hscroll-item:hover{border-color:var(--c-line-hover);transform:scale(1.03)}
+.hscroll-item img{width:100%;height:100%;object-fit:cover;object-position:center top}
+
+/* ══════════════════════════════════════════
+   TESTIMONIALS (component 1.txt)
+   3-column infinite auto-scroll upward
+   ══════════════════════════════════════════ */
+#testimonials{padding:var(--sp-16) var(--sp-6)}
+.testi-head{text-align:center;margin-bottom:var(--sp-8)}
+.testi-head .s-label{justify-content:center}
+/* Container with top/bottom fade mask (from component's [mask-image:linear-gradient]) */
+.testi-cols{
+  display:flex;justify-content:center;gap:var(--sp-3);
+  max-height:720px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent);
+}
+.testi-col{flex:0 0 300px;overflow:hidden}
+.testi-col:nth-child(2){display:none}
+.testi-col:nth-child(3){display:none}
+/* Animated track — translateY to -50% loops seamlessly (items duplicated by JS) */
+.testi-track{animation:scrollUp var(--dur,15s) linear infinite;display:flex;flex-direction:column;gap:var(--sp-3);padding-bottom:var(--sp-3)}
+.testi-track:hover{animation-play-state:paused}
+@keyframes scrollUp{to{transform:translateY(-50%)}}
+/* Card — matches component's rounded-3xl border shadow */
+.testi-card{
+  padding:var(--sp-4) var(--sp-4);
+  border-radius:var(--r-xl);
+  border:1px solid var(--c-line);
+  background:var(--c-surface);
+  backdrop-filter:blur(12px);
+  flex-shrink:0;
+  transition:border-color .3s;
+}
+.testi-card:hover{border-color:var(--c-line-hover)}
+.testi-stars{display:flex;gap:3px;margin-bottom:var(--sp-2)}
+.testi-star{color:var(--c-lav);font-size:.85rem}
+.testi-text{font-size:var(--text-sm);line-height:1.75;color:var(--c-text-70);margin-bottom:var(--sp-3)}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.testi-av{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);font-weight:600;color:var(--c-page)}
+.testi-name{font-size:var(--text-sm);font-weight:500;color:var(--c-text);line-height:1.2}
+.testi-role{font-size:var(--text-label);color:var(--c-lav);letter-spacing:.08em;font-family:var(--ff-jp);margin-top:.15rem}
+
+/* ─── ABOUT ─── */
+#about{padding:var(--sp-16) var(--sp-6);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-12);align-items:center}
+.about-img-wrap{position:relative;height:580px;border-radius:var(--r-lg);overflow:hidden}
+.about-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.68)}
+.about-img-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,127,255,.12),transparent);z-index:1}
+.about-badge{
+  position:absolute;bottom:-var(--sp-3);right:-var(--sp-3);
+  padding:var(--sp-3) var(--sp-4);
+  background:var(--c-surface-alt);backdrop-filter:blur(16px);
+  border:1px solid var(--c-line);border-radius:var(--r-lg);z-index:2;
+}
+.badge-num{font-family:var(--ff-disp);font-size:2.6rem;font-weight:300;color:var(--c-lav);line-height:1}
+.badge-lbl{font-size:var(--text-label);letter-spacing:.2em;color:var(--c-text-40);text-transform:uppercase;font-family:var(--ff-jp);margin-top:.2rem}
+.about-body{font-size:var(--text-sm);color:var(--c-text-70);line-height:1.9;margin-bottom:var(--sp-3)}
+.about-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:var(--sp-4)}
+.atag{padding:.35rem .9rem;border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:var(--text-label);letter-spacing:.12em;color:var(--c-text-40);font-family:var(--ff-jp)}
+.about-stats{display:flex;gap:var(--sp-6);margin-top:var(--sp-6);padding-top:var(--sp-6);border-top:1px solid var(--c-line)}
+.astat-num{font-family:var(--ff-disp);font-size:2rem;font-weight:300;color:var(--c-lav);line-height:1}
+.astat-lbl{font-size:var(--text-label);color:var(--c-text-40);letter-spacing:.1em;font-family:var(--ff-jp);margin-top:.2rem}
+
+/* ══════════════════════════════════════════
+   COMMISSION — Spotlight Card (component 2.txt)
+   FIXED: card-relative coords, mask-composite exclude
+   ══════════════════════════════════════════ */
+#commission{padding:var(--sp-16) var(--sp-6)}
+.comm-head{text-align:center;margin-bottom:var(--sp-12)}
+.comm-head .s-label{justify-content:center}
+.comm-head .s-title{margin-top:var(--sp-1)}
+.comm-sub{font-size:var(--text-sm);color:var(--c-text-40);margin-top:var(--sp-1)}
+.comm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px;max-width:1060px;margin:0 auto}
+
+/* GlowCard — component 2.txt adapted to vanilla CSS + FIXED mask */
+.gcard{
+  position:relative;isolation:isolate;
+  padding:var(--sp-4) var(--sp-4);
+  background:var(--c-surface);
+  border:1px solid var(--c-line);
+  border-radius:var(--r-lg);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  display:flex;flex-direction:column;
+  cursor:none;
+  transition:transform .4s var(--ease),border-color .3s,box-shadow .4s;
+}
+.gcard:hover{transform:translateY(-5px);border-color:var(--c-line-hover);box-shadow:0 24px 56px rgba(0,0,0,.45)}
+.gcard.featured{background:rgba(22,32,60,.7);border-color:rgba(196,181,244,.14)}
+
+/* FIXED Spotlight border glow — card-relative coordinates */
+.gcard::before{
+  content:'';position:absolute;
+  inset:-1px;
+  border-radius:calc(var(--r-lg) + 1px);
+  padding:1px;
+  background:radial-gradient(
+    280px at var(--mx,-999px) var(--my,-999px),
+    rgba(196,181,244,.55),transparent 65%
+  );
+  /* mask-composite: exclude clips to border area only */
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite:destination-out;
+  mask-composite:exclude;
+  pointer-events:none;
+  opacity:0;transition:opacity .35s;
+}
+.gcard:hover::before{opacity:1}
+
+/* FIXED Spotlight inner background glow */
+.gcard::after{
+  content:'';position:absolute;inset:0;
+  border-radius:var(--r-lg);
+  background:radial-gradient(
+    240px at var(--mx,-999px) var(--my,-999px),
+    rgba(196,181,244,.065),transparent 70%
+  );
+  pointer-events:none;z-index:-1;
+}
+/* Ensure all children render above the ::after pseudo-element */
+.gcard > *{position:relative;z-index:1}
+
+.gc-badge{display:inline-block;padding:.22rem .7rem;background:var(--c-lav-06);border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:var(--text-label);letter-spacing:.18em;color:var(--c-lav);font-family:var(--ff-jp);margin-bottom:var(--sp-3);width:fit-content}
+.gc-icon{font-size:1.8rem;margin-bottom:var(--sp-2);display:block}
+.gc-title{font-family:var(--ff-disp);font-size:1.35rem;font-weight:400;color:var(--c-text);margin-bottom:.4rem}
+.gc-price{font-family:var(--ff-disp);font-size:1.5rem;font-weight:300;color:var(--c-lav);margin-bottom:.5rem}
+.gc-price small{font-size:var(--text-xs);color:var(--c-text-40);font-family:var(--ff-body)}
+.gc-time{font-size:var(--text-label);color:var(--c-text-40);font-family:var(--ff-jp);letter-spacing:.1em;margin-bottom:var(--sp-3);padding-bottom:var(--sp-3);border-bottom:1px solid var(--c-line-soft)}
+.gc-list{flex:1;margin-bottom:var(--sp-4)}
+.gc-list li{font-size:var(--text-xs);color:var(--c-text-70);padding:.3rem 0;border-bottom:1px solid var(--c-line-soft);display:flex;align-items:baseline;gap:.45rem}
+.gc-list li::before{content:'—';color:var(--c-lav-50);flex-shrink:0;font-size:.65rem}
+.gc-cta{display:block;text-align:center;padding:.7rem;border:1px solid var(--c-line);border-radius:var(--r-sm);font-size:var(--text-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--c-text-70);transition:all .3s}
+.gc-cta:hover{border-color:var(--c-lav-50);color:var(--c-lav);background:var(--c-lav-06)}
+.comm-note{text-align:center;margin-top:var(--sp-4);font-size:var(--text-xs);color:var(--c-text-40)}
+.comm-note a{color:var(--c-lav);text-decoration:underline;text-underline-offset:3px}
+
+/* ─── SOCIAL ─── */
+#social{padding:var(--sp-16) var(--sp-6);text-align:center}
+.social-title{font-family:var(--ff-disp);font-size:var(--text-h2);font-weight:300;color:var(--c-text);margin-bottom:.5rem}
+.social-sub{font-size:var(--text-sm);color:var(--c-text-40);margin-bottom:var(--sp-8)}
+.social-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:.75rem}
+.slink{display:flex;align-items:center;gap:.7rem;padding:var(--sp-2) var(--sp-4);border:1px solid var(--c-line);border-radius:var(--r-lg);font-size:var(--text-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--c-text-70);transition:all .38s var(--ease);cursor:none;min-width:160px;justify-content:center;backdrop-filter:blur(8px)}
+.slink svg{width:17px;height:17px;flex-shrink:0}
+.slink:hover{border-color:var(--c-line-hover);color:var(--c-text);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4);background:var(--c-lav-06)}
+.slink.ig:hover{border-color:rgba(232,100,90,.4);background:rgba(232,100,90,.05)}
+.slink.wa:hover{border-color:rgba(37,211,102,.4);background:rgba(37,211,102,.05)}
+
+/* ─── FOOTER ─── */
+footer{padding:var(--sp-6);border-top:1px solid var(--c-line-soft);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-2)}
+.f-logo{font-family:var(--ff-disp);font-size:1.1rem;font-weight:300;letter-spacing:.2em;color:var(--c-text-40)}
+.f-jp{font-family:var(--ff-jp);font-size:var(--text-label);color:var(--c-lav-15);letter-spacing:.15em}
+.f-copy{font-size:var(--text-label);color:var(--c-text-20)}
+
+/* ─── MODAL (GalleryModal — component 3.txt) ─── */
+#modal{position:fixed;inset:0;z-index:200;background:rgba(4,7,14,.94);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+#modal.open{opacity:1;pointer-events:all}
+.modal-box{position:relative;width:min(92vw,880px);background:rgba(12,20,44,.65);border:1px solid var(--c-line);border-radius:var(--r-xl);overflow:hidden;backdrop-filter:blur(18px);display:flex;flex-direction:column;transform:scale(.96);transition:transform .48s var(--ease)}
+#modal.open .modal-box{transform:scale(1)}
+.modal-img-area{position:relative;width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:var(--sp-4);background:rgba(4,7,14,.4)}
+#modal-img{max-width:100%;max-height:66vh;width:auto;height:auto;object-fit:contain;border-radius:var(--r-md);box-shadow:0 16px 60px rgba(0,0,0,.7);display:block;opacity:0;transform:translateY(10px) scale(.97);transition:opacity .4s var(--ease),transform .4s var(--ease)}
+#modal-img.loaded{opacity:1;transform:none}
+.modal-info-bar{position:absolute;bottom:0;left:0;right:0;padding:var(--sp-3) var(--sp-3);background:linear-gradient(to top,rgba(4,7,14,.85),transparent)}
+.modal-title{font-family:var(--ff-disp);font-size:1.5rem;font-weight:400;color:var(--c-text);line-height:1}
+.modal-cat-lbl{font-size:var(--text-label);letter-spacing:.2em;color:var(--c-lav);font-family:var(--ff-jp);margin-top:.3rem}
+.modal-close{position:absolute;top:.75rem;right:.75rem;z-index:10;width:30px;height:30px;border-radius:50%;background:rgba(196,181,244,.1);color:var(--c-text-70);font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:background .3s,color .3s}
+.modal-close:hover{background:var(--c-lav-15);color:var(--c-text)}
+.modal-ctrl{display:flex;align-items:center;justify-content:space-between;padding:.85rem var(--sp-3)}
+.modal-nav{display:flex;align-items:center;gap:.4rem;font-size:var(--text-xs);color:var(--c-text-40);cursor:none;transition:color .3s;padding:.3rem}
+.modal-nav:hover{color:var(--c-lav)}
+.modal-watermark{font-size:var(--text-label);color:var(--c-text-20);letter-spacing:.1em;font-family:var(--ff-jp)}
+
+/* Draggable Dock (component 3.txt) */
+#dock{position:fixed;bottom:var(--sp-3);left:50%;transform:translateX(-50%);z-index:210;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+#modal.open #dock{opacity:1;pointer-events:all}
+.dock-wrap{display:flex;align-items:center;padding:.55rem .85rem;background:rgba(74,127,255,.1);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(100,160,255,.22);border-radius:var(--r-xl);box-shadow:0 8px 30px rgba(0,0,0,.55);cursor:grab;gap:0}
+.dock-wrap:active{cursor:grabbing}
+.dthumb{width:36px;height:36px;border-radius:var(--r-md);overflow:hidden;flex-shrink:0;cursor:none;margin-left:-7px;position:relative;z-index:1;border:2px solid transparent;transition:transform .35s var(--ease),border-color .25s,z-index 0s}
+.dthumb:first-child{margin-left:0}
+.dthumb img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.dthumb:nth-child(odd){transform:rotate(-13deg)}
+.dthumb:nth-child(even){transform:rotate(12deg)}
+.dthumb.on{transform:translateY(-10px) rotate(0deg) scale(1.22)!important;z-index:20;border-color:rgba(255,255,255,.55);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.dthumb:not(.on):hover{transform:translateY(-9px) rotate(0deg) scale(1.28)!important;z-index:15}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}
+
+/* ─── MOBILE MENU ─── */
+#mmenu{position:fixed;inset:0;z-index:150;background:rgba(4,7,14,.97);backdrop-filter:blur(22px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-4);opacity:0;pointer-events:none;transition:opacity .4s}
+#mmenu.open{opacity:1;pointer-events:all}
+#mmenu a{font-family:var(--ff-disp);font-size:2rem;font-weight:300;letter-spacing:.1em;color:var(--c-text-70);transition:color .3s}
+#mmenu a:hover{color:var(--c-lav)}
+
+/* ─── RESPONSIVE ─── */
+@media(min-width:768px){.testi-col:nth-child(2){display:block}}
+@media(min-width:1024px){.testi-col:nth-child(3){display:block}}
+@media(max-width:1024px){
+  .bento{grid-template-columns:repeat(3,1fr)}
+  #about{grid-template-columns:1fr;gap:var(--sp-8)}
+  .about-img-wrap{height:420px}
+}
+@media(max-width:768px){
+  nav{padding:var(--sp-2) var(--sp-3)}
+  nav.scrolled{padding:var(--sp-1) var(--sp-3)}
+  .nav-links{display:none}
+  .nav-burger{display:flex}
+  #hero{padding:0 var(--sp-3) var(--sp-6)}
+  .s-pad,#gallery,#about,#testimonials,#commission,#social{padding:var(--sp-12) var(--sp-3)}
+  #gallery{padding:var(--sp-12) var(--sp-3) var(--sp-6)}
+  .bento{grid-template-columns:repeat(2,1fr);grid-auto-rows:80px}
+  .bc1r3{grid-column:span 1;grid-row:span 2}
+  .bc2r2,.bc2r3{grid-column:span 2;grid-row:span 2}
+  .modal-box{width:96vw}
+  footer{flex-direction:column;text-align:center;padding:var(--sp-4) var(--sp-3)}
+  .divider{margin:0 var(--sp-3)}
+  .about-badge{right:.5rem;bottom:-1rem}
+  .hero-scroll{display:none}
+  .about-stats{gap:var(--sp-4)}
+  #about{gap:var(--sp-6)}
+}
+@media(max-width:480px){
+  .bento{grid-template-columns:1fr 1fr;gap:7px;grid-auto-rows:90px}
+  .bc1r3,.bc2r2,.bc2r3{grid-column:span 2;grid-row:span 2}
+  .social-grid{flex-direction:column;align-items:center}
+  .slink{width:100%;max-width:260px}
+  .comm-grid{grid-template-columns:1fr}
+  .testi-cols{gap:var(--sp-2)}
+  .testi-col{flex:0 0 260px}
+}
+</style>
+</head>
+<body class="loading">
+
+<div id="grain"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ─── LOADER ─── -->
+<div id="loader">
+  <div class="loader-logo">Rytopen</div>
+  <div class="loader-jp">りとぺん · アニメイラストスタジオ</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<div id="particles"></div>
+
+<!-- ─── MOBILE MENU ─── -->
+<div id="mmenu">
+  <a href="#gallery" onclick="closeMenu()">Gallery</a>
+  <a href="#testimonials" onclick="closeMenu()">Reviews</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#commission" onclick="closeMenu()">Commission</a>
+  <a href="#social" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <div class="nav-logo">Ryto<em>pen</em></div>
+  <div class="nav-links">
+    <a class="nav-link" href="#gallery"    data-en="Gallery"    data-id="Galeri">Gallery</a>
+    <a class="nav-link" href="#about"      data-en="About"      data-id="Tentang">About</a>
+    <a class="nav-link" href="#commission" data-en="Commission" data-id="Komisi">Commission</a>
+    <a class="nav-link" href="#social"     data-en="Contact"    data-id="Kontak">Contact</a>
+    <div class="lang-sw">
+      <button id="btn-en" class="on" onclick="setLang('en')">EN</button>
+      <i>/</i>
+      <button id="btn-id" onclick="setLang('id')">ID</button>
+    </div>
+  </div>
+  <div class="nav-burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg">
+    <img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (4).jpeg" alt="Harsa — Rytopen Original Character" id="hero-img">
+    <div class="hero-overlay"></div>
+    <div class="hero-glow"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" data-en="Original Character · Harsa" data-id="Karakter Asli · Harsa">Original Character · Harsa</div>
+    <h1 class="hero-title">Ryto<em>pen</em></h1>
+    <p class="hero-studio" data-en="Anime Illustration Studio" data-id="Studio Ilustrasi Anime">Anime Illustration Studio</p>
+    <p class="hero-body"
+       data-en="We craft dreamy anime characters with chibi, moe, and pastel fantasy aesthetics — each piece handmade with Japanese illustration sensibility."
+       data-id="Kami menciptakan karakter anime impian dengan estetika chibi, moe, dan pastel fantasy — setiap karya dibuat tangan dengan sensibilitas ilustrasi Jepang.">
+      We craft dreamy anime characters with chibi, moe, and pastel fantasy aesthetics — each piece handmade with Japanese illustration sensibility.
+    </p>
+    <div class="hero-btns">
+      <a href="#gallery"    class="btn btn-pri" data-en="Explore Gallery"  data-id="Jelajahi Galeri">Explore Gallery</a>
+      <a href="#commission" class="btn btn-ghost" data-en="Commission Open" data-id="Buka Komisi">Commission Open</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span style="writing-mode:vertical-rl;letter-spacing:.2em">scroll</span>
+  </div>
+</section>
+
+<!-- ─── GALLERY ─── -->
+<section id="gallery">
+  <div class="gallery-head">
+    <div>
+      <div class="s-label" data-en="Our Works" data-id="Karya Kami">Our Works</div>
+      <h2 class="s-title reveal">The <em>Gallery</em></h2>
+      <p class="s-desc reveal rd1"
+         data-en="Drag to reorder · Click any artwork to explore fullscreen."
+         data-id="Seret untuk susun ulang · Klik karya untuk lihat fullscreen.">
+        Drag to reorder · Click any artwork to explore fullscreen.
+      </p>
+    </div>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab on"  data-filter="all"       data-en="All Works"         data-id="Semua Karya">All Works</button>
+    <button class="cat-tab"     data-filter="fantasy"   data-en="Fantasy Collection" data-id="Koleksi Fantasi">Fantasy Collection</button>
+    <button class="cat-tab"     data-filter="chibi"     data-en="Chibi Works"        data-id="Karya Chibi">Chibi Works</button>
+    <button class="cat-tab"     data-filter="pastel"    data-en="Pastel Mood"        data-id="Suasana Pastel">Pastel Mood</button>
+    <button class="cat-tab"     data-filter="character" data-en="Character Design"   data-id="Desain Karakter">Character Design</button>
+  </div>
+
+  <!-- Interactive Bento Grid — component 3.txt -->
+  <div class="bento" id="bento">
+    <div class="bcard bc1r3" data-idx="0"  data-cat="fantasy"   draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (4).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Harsa</div><div class="bcard-cat">Fantasy Collection</div></div></div>
+    <div class="bcard bc2r2" data-idx="1"  data-cat="character" draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (5).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Celestia</div><div class="bcard-cat">Character Design</div></div></div>
+    <div class="bcard bc1r3" data-idx="2"  data-cat="pastel"    draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (6).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Bloom</div><div class="bcard-cat">Pastel Mood</div></div></div>
+    <div class="bcard bc2r2" data-idx="3"  data-cat="character" draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.50 (1).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Aoi</div><div class="bcard-cat">Character Design</div></div></div>
+    <div class="bcard bc1r3" data-idx="4"  data-cat="fantasy"   draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (3).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Starfall</div><div class="bcard-cat">Fantasy Collection</div></div></div>
+    <div class="bcard bc2r2" data-idx="5"  data-cat="pastel"    draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (2).jpeg" loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Sakura Eve</div><div class="bcard-cat">Pastel Mood</div></div></div>
+    <div class="bcard bc1r3" data-idx="6"  data-cat="chibi"     draggable="true"><img src="./chibi/WhatsApp Image 2026-05-12 at 18.42.35.jpeg"           loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Mochi</div><div class="bcard-cat">Chibi Works</div></div></div>
+    <div class="bcard bc2r2" data-idx="7"  data-cat="chibi"     draggable="true"><img src="./chibi/WhatsApp Image 2026-05-12 at 18.42.35 (1).jpeg"        loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Yuki</div><div class="bcard-cat">Chibi Works</div></div></div>
+    <div class="bcard bc1r3" data-idx="8"  data-cat="chibi"     draggable="true"><img src="./chibi/WhatsApp Image 2026-05-12 at 18.42.36.jpeg"             loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Tsuki</div><div class="bcard-cat">Chibi Works</div></div></div>
+    <div class="bcard bc2r2" data-idx="9"  data-cat="chibi"     draggable="true"><img src="./chibi/WhatsApp Image 2026-05-12 at 18.42.36 (1).jpeg"         loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Hana</div><div class="bcard-cat">Chibi Works</div></div></div>
+    <div class="bcard bc1r3" data-idx="10" data-cat="fantasy"   draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (1).jpeg"     loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Dream Realm</div><div class="bcard-cat">Fantasy Collection</div></div></div>
+    <div class="bcard bc2r2" data-idx="11" data-cat="character" draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.51.jpeg"          loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Ryo</div><div class="bcard-cat">Character Design</div></div></div>
+    <div class="bcard bc1r3" data-idx="12" data-cat="pastel"    draggable="true"><img src="./character/WhatsApp Image 2026-05-12 at 18.41.50.jpeg"          loading="lazy" alt=""><div class="bcard-ov"><div class="bcard-ov-bg"></div><div class="bcard-title">Lavender Dusk</div><div class="bcard-cat">Pastel Mood</div></div></div>
+  </div>
+
+  <!-- Horizontal scroll strip -->
+  <div class="hscroll reveal">
+    <div class="hscroll-lbl" data-en="— Scrolling Showcase —" data-id="— Showcase Bergulir —">— Scrolling Showcase —</div>
+    <div class="hscroll-track" id="htrack"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     TESTIMONIALS — component 1.txt
+     3-column infinite vertical scroll
+     ══════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="testi-head reveal">
+    <div class="s-label" style="justify-content:center" data-en="Client Love" data-id="Klien Kami">Client Love</div>
+    <h2 class="s-title" data-en="What our clients <em>say</em>" data-id="Apa kata <em>klien</em> kami">What our clients <em>say</em></h2>
+    <p style="font-size:var(--text-sm);color:var(--c-text-40);margin-top:.6rem"
+       data-en="Trusted by artists, VTubers, and creators across Indonesia."
+       data-id="Dipercaya oleh seniman, VTuber, dan kreator di seluruh Indonesia.">
+       Trusted by artists, VTubers, and creators across Indonesia.
+    </p>
+  </div>
+  <div class="testi-cols" id="testi-cols">
+    <div class="testi-col" id="tcol-0"><div class="testi-track" style="--dur:15s" id="ttrack-0"></div></div>
+    <div class="testi-col" id="tcol-1"><div class="testi-track" style="--dur:19s" id="ttrack-1"></div></div>
+    <div class="testi-col" id="tcol-2"><div class="testi-track" style="--dur:17s" id="ttrack-2"></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="reveal">
+    <div style="position:relative;height:580px;border-radius:var(--r-lg);overflow:hidden" class="about-img-wrap">
+      <img src="./character/WhatsApp Image 2026-05-12 at 18.41.51 (3).jpeg" alt="Rytopen Studio Artwork" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.68)">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(74,127,255,.12),transparent);z-index:1"></div>
+    </div>
+    <div class="about-badge" style="position:absolute;bottom:-1rem;right:-1rem;padding:1.2rem 1.6rem;background:var(--c-surface-alt);backdrop-filter:blur(16px);border:1px solid var(--c-line);border-radius:var(--r-lg);z-index:2">
+      <div class="badge-num">120+</div>
+      <div class="badge-lbl" data-en="Artworks Completed" data-id="Karya Selesai">Artworks Completed</div>
+    </div>
+  </div>
+  <div class="reveal rd2">
+    <div class="s-label" data-en="The Studio" data-id="Studio">The Studio</div>
+    <h2 class="s-title" style="margin-bottom:1.5rem">We craft <em>dreamy</em><br>anime worlds</h2>
+    <p class="about-body"
+       data-en="Rytopen is a boutique anime illustration studio born from a deep love of Japanese character art. Every piece is hand-drawn to express personality, emotion, and the gentle magic of anime aesthetics."
+       data-id="Rytopen adalah studio ilustrasi anime butik yang lahir dari kecintaan mendalam pada seni karakter Jepang. Setiap karya digambar tangan untuk mengekspresikan kepribadian, emosi, dan sihir lembut estetika anime.">
+      Rytopen is a boutique anime illustration studio born from a deep love of Japanese character art. Every piece is hand-drawn to express personality, emotion, and the gentle magic of anime aesthetics.
+    </p>
+    <p class="about-body"
+       data-en="We specialize in chibi design, cute moe illustration, and pastel fantasy — from personal OC commissions to VTuber character sheets and commercial merch artwork."
+       data-id="Kami berspesialisasi dalam desain chibi, ilustrasi cute moe, dan pastel fantasy — dari komisi OC pribadi hingga character sheet VTuber dan artwork merch komersial.">
+      We specialize in chibi design, cute moe illustration, and pastel fantasy — from personal OC commissions to VTuber character sheets and commercial merch artwork.
+    </p>
+    <div class="about-tags">
+      <span class="atag">Chibi Art</span>
+      <span class="atag">Cute Moe</span>
+      <span class="atag">Pastel Fantasy</span>
+      <span class="atag">OC Design</span>
+      <span class="atag">VTuber Art</span>
+      <span class="atag">Merch Artwork</span>
+    </div>
+    <div class="about-stats">
+      <div><div class="astat-num">120+</div><div class="astat-lbl" data-en="Artworks" data-id="Karya">Artworks</div></div>
+      <div><div class="astat-num">50+</div><div class="astat-lbl" data-en="Happy Clients" data-id="Klien Puas">Happy Clients</div></div>
+      <div><div class="astat-num">2+</div><div class="astat-lbl" data-en="Years Active" data-id="Tahun Aktif">Years Active</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     COMMISSION — GlowCard spotlight (component 2.txt, FIXED)
+     ══════════════════════════════════════════ -->
+<section id="commission">
+  <div class="comm-head reveal">
+    <div class="s-label" style="justify-content:center" data-en="Work With Us" data-id="Bekerja Dengan Kami">Work With Us</div>
+    <h2 class="s-title">Commission <em>Open</em></h2>
+    <p class="comm-sub"
+       data-en="Bring your character to life. Limited slots available each month."
+       data-id="Wujudkan karakter Anda. Slot terbatas setiap bulan.">
+       Bring your character to life. Limited slots available each month.
+    </p>
+  </div>
+  <div class="comm-grid">
+    <div class="gcard reveal">
+      <span class="gc-badge">スターター</span>
+      <span class="gc-icon">✦</span>
+      <div class="gc-title">Chibi</div>
+      <div class="gc-price">Rp 85.000 <small>/ karakter</small></div>
+      <div class="gc-time" data-en="Delivery: 3–5 business days · 2 revisions" data-id="Pengiriman: 3–5 hari kerja · 2 revisi">Delivery: 3–5 business days · 2 revisions</div>
+      <ul class="gc-list">
+        <li data-en="Full chibi illustration" data-id="Ilustrasi chibi lengkap">Full chibi illustration</li>
+        <li data-en="Flat color or soft cel shading" data-id="Flat color atau soft cel shading">Flat color or soft cel shading</li>
+        <li data-en="Simple or transparent background" data-id="Background simple atau transparan">Simple or transparent background</li>
+        <li data-en="PNG high-resolution file" data-id="File PNG resolusi tinggi">PNG high-resolution file</li>
+      </ul>
+      <a href="https://wa.me/628999999999?text=Halo%20Rytopen%2C%20saya%20ingin%20commission%20Chibi!" class="gc-cta" target="_blank" data-en="Order Now" data-id="Pesan Sekarang">Order Now</a>
+    </div>
+    <div class="gcard reveal rd1">
+      <span class="gc-badge">スタンダード</span>
+      <span class="gc-icon">✧</span>
+      <div class="gc-title">Half Body</div>
+      <div class="gc-price">Rp 175.000 <small>/ karakter</small></div>
+      <div class="gc-time" data-en="Delivery: 5–7 business days · 3 revisions" data-id="Pengiriman: 5–7 hari kerja · 3 revisi">Delivery: 5–7 business days · 3 revisions</div>
+      <ul class="gc-list">
+        <li data-en="Half body illustration" data-id="Ilustrasi half body">Half body illustration</li>
+        <li data-en="Full shading and soft lighting" data-id="Full shading dan soft lighting">Full shading and soft lighting</li>
+        <li data-en="Simple to mid-detail background" data-id="Background simple hingga medium">Simple to mid-detail background</li>
+        <li data-en="PNG + layered PSD file" data-id="File PNG + PSD berlapis">PNG + layered PSD file</li>
+      </ul>
+      <a href="https://wa.me/628999999999?text=Halo%20Rytopen%2C%20saya%20ingin%20commission%20Half%20Body!" class="gc-cta" target="_blank" data-en="Order Now" data-id="Pesan Sekarang">Order Now</a>
+    </div>
+    <div class="gcard featured reveal rd2">
+      <span class="gc-badge">プレミアム</span>
+      <span class="gc-icon">❋</span>
+      <div class="gc-title">Full Illustration</div>
+      <div class="gc-price">Rp 350.000 <small>/ karakter</small></div>
+      <div class="gc-time" data-en="Delivery: 7–14 days · Unlimited revisions" data-id="Pengiriman: 7–14 hari · Revisi unlimited">Delivery: 7–14 days · Unlimited revisions</div>
+      <ul class="gc-list">
+        <li data-en="Full body illustration" data-id="Ilustrasi full body">Full body illustration</li>
+        <li data-en="Detailed shading, glow FX & depth" data-id="Shading detail, glow FX & kedalaman">Detailed shading, glow FX & depth</li>
+        <li data-en="Full complex background" data-id="Background kompleks penuh">Full complex background</li>
+        <li data-en="PNG + PSD source file" data-id="File PNG + PSD source">PNG + PSD source file</li>
+        <li data-en="Commercial use included" data-id="Termasuk hak penggunaan komersial">Commercial use included</li>
+      </ul>
+      <a href="https://wa.me/628999999999?text=Halo%20Rytopen%2C%20saya%20ingin%20Full%20Illustration!" class="gc-cta" target="_blank" data-en="Order Now" data-id="Pesan Sekarang">Order Now</a>
+    </div>
+    <div class="gcard reveal rd3">
+      <span class="gc-badge">ビジネス</span>
+      <span class="gc-icon">◈</span>
+      <div class="gc-title">Commercial</div>
+      <div class="gc-price">Rp 750.000+ <small>/ proyek</small></div>
+      <div class="gc-time" data-en="Delivery: by quote · Priority slot" data-id="Pengiriman: by quote · Slot prioritas">Delivery: by quote · Priority slot</div>
+      <ul class="gc-list">
+        <li data-en="Commercial & merch license" data-id="Lisensi komersial & merch">Commercial & merch license</li>
+        <li data-en="VTuber character sheet" data-id="Character sheet VTuber">VTuber character sheet</li>
+        <li data-en="Brand / NFT / Product use" data-id="Penggunaan Brand / NFT / Produk">Brand / NFT / Product use</li>
+        <li data-en="Full source files included" data-id="Source file lengkap disertakan">Full source files included</li>
+      </ul>
+      <a href="https://wa.me/628999999999?text=Halo%20Rytopen%2C%20saya%20ingin%20commercial%20commission!" class="gc-cta" target="_blank" data-en="Inquire" data-id="Hubungi Kami">Inquire</a>
+    </div>
+  </div>
+  <p class="comm-note"
+     data-en='Commission queue is currently <strong style="color:var(--c-lav)">open</strong>. DM on <a href="#social">social media</a> for bundles or custom requests.'
+     data-id='Antrian komisi saat ini <strong style="color:var(--c-lav)">terbuka</strong>. DM di <a href="#social">media sosial</a> untuk bundel atau permintaan khusus.'>
+     Commission queue is currently <strong style="color:var(--c-lav)">open</strong>. DM on <a href="#social">social media</a> for bundles or custom requests.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ─── SOCIAL ─── -->
+<section id="social" class="s-pad">
+  <div class="s-label" style="justify-content:center" data-en="Find Us" data-id="Temukan Kami">Find Us</div>
+  <h2 class="social-title reveal">Let's <em style="font-style:italic;color:var(--c-lav)">Connect</em></h2>
+  <p class="social-sub reveal rd1"
+     data-en="Follow for new artworks, WIPs, and commission status."
+     data-id="Ikuti untuk karya baru, WIP, dan status komisi.">
+     Follow for new artworks, WIPs, and commission status.
+  </p>
+  <div class="social-grid">
+    <a href="#" class="slink ig reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+      Instagram
+    </a>
+    <a href="#" class="slink reveal rd1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      Facebook
+    </a>
+    <a href="#" class="slink reveal rd2">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      X / Twitter
+    </a>
+    <a href="https://wa.me/628999999999" class="slink wa reveal rd3" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a4.07 4.07 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">Rytopen</div>
+  <div class="f-jp">りとぺん · スタジオ · 2024</div>
+  <div class="f-copy">© 2024 Rytopen Illustration Studio. All rights reserved.</div>
+</footer>
+
+<!-- ─── MODAL (GalleryModal + Dock — component 3.txt) ─── -->
+<div id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img-area">
+      <img id="modal-img" src="" alt="">
+      <div class="img-shield" style="position:absolute;inset:0;z-index:5"></div>
+      <div class="modal-info-bar">
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-cat-lbl" id="modal-cat"></div>
+      </div>
+    </div>
+    <div class="modal-ctrl">
+      <button class="modal-nav" onclick="prevModal()">‹ <span data-en="Prev" data-id="Sebelum">Prev</span></button>
+      <div class="modal-watermark">© Rytopen — All Rights Reserved</div>
+      <button class="modal-nav" onclick="nextModal()"><span data-en="Next" data-id="Berikut">Next</span> ›</button>
+    </div>
+  </div>
+</div>
+
+<!-- Draggable Dock -->
+<div id="dock">
+  <div class="dock-wrap" id="dock-inner"></div>
+</div>
+
+<script>
+/* ── DATA ── */
+const artworks=[
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (4).jpeg',title:'Harsa',cat:'Fantasy Collection'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (5).jpeg',title:'Celestia',cat:'Character Design'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (6).jpeg',title:'Bloom',cat:'Pastel Mood'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.50 (1).jpeg',title:'Aoi',cat:'Character Design'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (3).jpeg',title:'Starfall',cat:'Fantasy Collection'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (2).jpeg',title:'Sakura Eve',cat:'Pastel Mood'},
+  {src:'./chibi/WhatsApp Image 2026-05-12 at 18.42.35.jpeg',title:'Mochi',cat:'Chibi Works'},
+  {src:'./chibi/WhatsApp Image 2026-05-12 at 18.42.35 (1).jpeg',title:'Yuki',cat:'Chibi Works'},
+  {src:'./chibi/WhatsApp Image 2026-05-12 at 18.42.36.jpeg',title:'Tsuki',cat:'Chibi Works'},
+  {src:'./chibi/WhatsApp Image 2026-05-12 at 18.42.36 (1).jpeg',title:'Hana',cat:'Chibi Works'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51 (1).jpeg',title:'Dream Realm',cat:'Fantasy Collection'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.51.jpeg',title:'Ryo',cat:'Character Design'},
+  {src:'./character/WhatsApp Image 2026-05-12 at 18.41.50.jpeg',title:'Lavender Dusk',cat:'Pastel Mood'},
+];
+
+/* Testimonials data (component 1.txt adapted for anime studio) */
+const testimonials=[
+  {text:"Rytopen bikin chibi OC aku jadi kelihatan super cute! Detail-nya bagus banget, sesuai request dan cepat. Pasti order lagi!",name:"Mikayla R.",role:"Chibi Commission",color:"#c4b5f4"},
+  {text:"VTuber design yang Rytopen buat buat debut aku jadi makin percaya diri. Mereka bener-bener ngerti style anime Jepang!",name:"AkuNeko_",role:"VTuber Design",color:"#7ea8ff"},
+  {text:"Full illustration hasilnya jauh melebihi ekspektasi. Coloring-nya halus, background-nya detail banget. Recommended!",name:"Lara S.",role:"Full Illustration",color:"#f9a8d4"},
+  {text:"Artwork for my merch line came out perfect. Colors were exactly right and delivery was ahead of schedule!",name:"Reza T.",role:"Commercial Use",color:"#86efac"},
+  {text:"Half body commission keren banget! Pose-nya dynamic dan ekspresi karakter aku keliatan hidup banget!",name:"Nadia K.",role:"Half Body",color:"#fcd34d"},
+  {text:"Udah order 3x dan selalu puas! Konsistensi kualitas Rytopen bikin aku jadi pelanggan setia.",name:"Ichigo_Fan",role:"Returning Client",color:"#c4b5f4"},
+  {text:"The pastel fantasy aesthetic for my character is absolutely dreamy. Exactly the vibe I was going for!",name:"Stella M.",role:"Character Design",color:"#7ea8ff"},
+  {text:"Proses commission sangat smooth! Komunikasi bagus, revisi cepat, hasilnya premium. Worth it!",name:"Haruki D.",role:"Full Illustration",color:"#f9a8d4"},
+  {text:"Chibi set buat stiker LINE aku dapet pujian dari semua temen! Lucu dan karakter-nya hidup. Thank you Rytopen!",name:"Putri A.",role:"Sticker Set",color:"#86efac"},
+];
+
+let curModal=0;
+
+/* ── LOADER ── */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hide');
+    document.body.classList.remove('loading');
+    initReveal();
+    initBento();
+    buildDock();
+    buildTestimonials();
+  },2400);
+});
+
+/* ── CURSOR ── */
+const cEl=document.getElementById('cursor'),rEl=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cEl.style.left=mx+'px';cEl.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;rEl.style.left=rx+'px';rEl.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.bcard,.gcard,.slink,.hscroll-item,.dthumb').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hovering'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hovering'));
+});
+
+/* ── NAV ── */
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('scrolled',window.scrollY>60));
+
+/* ── MOBILE MENU ── */
+function toggleMenu(){document.getElementById('mmenu').classList.toggle('open')}
+function closeMenu(){document.getElementById('mmenu').classList.remove('open')}
+
+/* ── PARTICLES ── */
+(()=>{
+  const c=document.getElementById('particles');
+  const cols=['rgba(196,181,244,.35)','rgba(74,127,255,.25)','rgba(240,238,248,.18)'];
+  for(let i=0;i<24;i++){
+    const p=document.createElement('div');p.className='particle';
+    const s=Math.random()*3+1;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${cols[i%3]};animation-duration:${13+Math.random()*16}s;animation-delay:${Math.random()*14}s;--drift:${(Math.random()-.5)*110}px`;
+    c.appendChild(p);
+  }
+})();
+
+/* ── HERO PARALLAX ── */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY,img=document.getElementById('hero-img');
+  if(img&&y<window.innerHeight)img.style.transform=`scale(1.04) translateY(${y*.22}px)`;
+},{passive:true});
+
+/* ── REVEAL ── */
+function initReveal(){
+  const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.07,rootMargin:'0px 0px -36px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
+}
+
+/* ── BENTO ENTRANCE (component 3.txt staggerChildren) ── */
+function initBento(){
+  document.querySelectorAll('.bcard').forEach((c,i)=>setTimeout(()=>c.classList.add('in'),i*55));
+}
+
+/* ── CATEGORY FILTER ── */
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click',function(){
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('on'));
+    this.classList.add('on');
+    const f=this.dataset.filter;
+    document.querySelectorAll('.bcard').forEach(c=>{
+      const show=f==='all'||c.dataset.cat===f;
+      c.style.opacity=show?'':'0.1';
+      c.style.filter=show?'':'grayscale(1)';
+      c.style.pointerEvents=show?'':'none';
+    });
+  });
+});
+
+/* ── DRAG-TO-REORDER (component 3.txt) ── */
+let dragSrc=null;
+document.querySelectorAll('.bcard').forEach(c=>{
+  c.addEventListener('dragstart',e=>{dragSrc=c;setTimeout(()=>c.classList.add('dragging'),0);e.dataTransfer.effectAllowed='move'});
+  c.addEventListener('dragend',()=>{c.classList.remove('dragging');document.querySelectorAll('.bcard').forEach(x=>x.classList.remove('drag-over'))});
+  c.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move'});
+  c.addEventListener('dragenter',()=>{if(dragSrc&&dragSrc!==c)c.classList.add('drag-over')});
+  c.addEventListener('dragleave',()=>c.classList.remove('drag-over'));
+  c.addEventListener('drop',e=>{
+    e.preventDefault();if(!dragSrc||dragSrc===c)return;
+    c.classList.remove('drag-over');
+    const g=document.getElementById('bento');
+    const cs=[...g.children];const si=cs.indexOf(dragSrc),ti=cs.indexOf(c);
+    if(si<ti)c.after(dragSrc);else c.before(dragSrc);
+    const tmp=artworks[si];artworks[si]=artworks[ti];artworks[ti]=tmp;
+  });
+  c.addEventListener('click',()=>{if(!c.classList.contains('dragging'))openModal(parseInt(c.dataset.idx))});
+});
+
+/* ── HSCROLL ── */
+(()=>{
+  const t=document.getElementById('htrack');
+  [...artworks,...artworks].forEach((a,i)=>{
+    const d=document.createElement('div');d.className='hscroll-item';
+    const img=document.createElement('img');img.src=a.src;img.alt=a.title;img.loading='lazy';
+    d.appendChild(img);d.onclick=()=>openModal(i%artworks.length);
+    t.appendChild(d);
+  });
+})();
+
+/* ══════════════════════════════════════════
+   TESTIMONIALS — component 1.txt
+   3-column infinite scroll-up (duplicate items for seamless loop)
+   ══════════════════════════════════════════ */
+function buildTestimonials(){
+  const thirds=[
+    testimonials.slice(0,3),  // column 0
+    testimonials.slice(3,6),  // column 1
+    testimonials.slice(6,9),  // column 2
+  ];
+  thirds.forEach((col,ci)=>{
+    const track=document.getElementById('ttrack-'+ci);
+    if(!track)return;
+    // duplicate ×2 for seamless loop (component 1.txt: new Array(2).fill(0).map...)
+    [...col,...col].forEach(t=>{
+      const card=document.createElement('div');
+      card.className='testi-card';
+      card.innerHTML=`
+        <div class="testi-stars">${'★'.repeat(5).split('').map(s=>`<span class="testi-star">${s}</span>`).join('')}</div>
+        <p class="testi-text">${t.text}</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:${t.color}">${t.name[0]}</div>
+          <div>
+            <div class="testi-name">${t.name}</div>
+            <div class="testi-role">${t.role}</div>
+          </div>
+        </div>`;
+      track.appendChild(card);
+    });
+  });
+}
+
+/* ── SPOTLIGHT CARD (component 2.txt) — FIXED: card-relative coordinates ── */
+document.addEventListener('pointermove',e=>{
+  document.querySelectorAll('.gcard').forEach(el=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    el.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+/* ── MODAL ── */
+function openModal(idx){
+  curModal=idx;renderModal();
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+  document.getElementById('dock').style.transform='translateX(-50%)';
+}
+function renderModal(){
+  const a=artworks[curModal];
+  const img=document.getElementById('modal-img');
+  img.classList.remove('loaded');
+  img.src=a.src;
+  img.onload=()=>img.classList.add('loaded');
+  document.getElementById('modal-title').textContent=a.title;
+  document.getElementById('modal-cat').textContent=a.cat;
+  updateDock();
+}
+function nextModal(){curModal=(curModal+1)%artworks.length;renderModal()}
+function prevModal(){curModal=(curModal-1+artworks.length)%artworks.length;renderModal()}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('modal').classList.contains('open'))return;
+  if(e.key==='Escape')closeModal();
+  if(e.key==='ArrowRight')nextModal();
+  if(e.key==='ArrowLeft')prevModal();
+});
+/* ── IMAGE PROTECTION SYSTEM ── */
+(()=>{
+  /* 1. Block right-click everywhere */
+  document.addEventListener('contextmenu',e=>{
+    if(e.target.closest('.bcard,.hscroll-item,.modal-img-area,.dthumb,.about-img-wrap')){
+      e.preventDefault();
+      triggerProtect(e.target);
+    }
+  });
+
+  /* 2. Block drag on images */
+  document.addEventListener('dragstart',e=>{
+    if(e.target.tagName==='IMG'||e.target.closest('.bcard,.hscroll-item,.modal-img-area')){
+      e.preventDefault();
+      triggerProtect(e.target);
+    }
+  });
+
+  /* 3. Block Ctrl+S / Cmd+S save-page shortcut */
+  document.addEventListener('keydown',e=>{
+    if((e.ctrlKey||e.metaKey)&&(e.key==='s'||e.key==='S'||e.key==='u'||e.key==='U')){
+      e.preventDefault();
+      showToast();
+    }
+  });
+
+  /* 4. Block PrintScreen key (best-effort) */
+  document.addEventListener('keyup',e=>{
+    if(e.key==='PrintScreen'){
+      blurAll();setTimeout(unblurAll,1800);
+    }
+  });
+
+  /* 5. Visibility change — blur while tab not focused (screen grab tools) */
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)blurAll();
+    else setTimeout(unblurAll,600);
+  });
+
+  /* 6. Prevent touch callout on mobile (iOS long-press save) */
+  document.querySelectorAll('img').forEach(img=>{
+    img.setAttribute('draggable','false');
+  });
+
+  /* 7. Inject shield divs over all image containers */
+  document.querySelectorAll('.bcard,.hscroll-item,.about-img-wrap').forEach(wrap=>{
+    if(wrap.querySelector('.img-shield'))return;
+    const shield=document.createElement('div');
+    shield.className='img-shield';
+    wrap.appendChild(shield);
+  });
+})();
+
+/* Blur effect — applied to target image element */
+function triggerProtect(target){
+  const imgs=[];
+  const bcard=target.closest('.bcard');
+  const mArea=target.closest('.modal-img-area');
+  const hItem=target.closest('.hscroll-item');
+  if(bcard)imgs.push(...bcard.querySelectorAll('img'));
+  if(mArea)imgs.push(document.getElementById('modal-img'));
+  if(hItem)imgs.push(...hItem.querySelectorAll('img'));
+  if(target.tagName==='IMG')imgs.push(target);
+
+  imgs.forEach(img=>{
+    img.style.transition='filter 0s';
+    img.style.filter='blur(28px) brightness(0.25) saturate(0)';
+  });
+  showToast();
+  setTimeout(()=>{
+    imgs.forEach(img=>{
+      img.style.transition='filter 1.4s ease';
+      img.style.filter='';
+    });
+  },900);
+}
+
+function blurAll(){
+  document.querySelectorAll('img').forEach(img=>{
+    img.style.transition='filter 0s';
+    img.style.filter='blur(25px) brightness(0.2)';
+  });
+}
+function unblurAll(){
+  document.querySelectorAll('img').forEach(img=>{
+    img.style.transition='filter 1.2s ease';
+    img.style.filter='';
+  });
+}
+
+/* Toast notification */
+function showToast(){
+  let t=document.getElementById('protect-toast');
+  if(!t){
+    t=document.createElement('div');t.id='protect-toast';
+    t.style.cssText='position:fixed;bottom:6rem;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(12,18,40,.92);color:#c4b5f4;font-family:var(--ff-jp);font-size:.72rem;letter-spacing:.18em;padding:.65rem 1.4rem;border:1px solid rgba(196,181,244,.2);border-radius:100px;backdrop-filter:blur(16px);z-index:9999;opacity:0;transition:opacity .3s,transform .3s;white-space:nowrap;pointer-events:none';
+    document.body.appendChild(t);
+  }
+  t.textContent='🔒 Artwork dilindungi · © Rytopen All Rights Reserved';
+  t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(8px)'},2800);
+}
+
+/* ── DOCK ── */
+function buildDock(){
+  const inner=document.getElementById('dock-inner');
+  inner.innerHTML='';
+  artworks.forEach((a,i)=>{
+    const d=document.createElement('div');d.className='dthumb';
+    if(i===curModal)d.classList.add('on');
+    const img=document.createElement('img');img.src=a.src;img.alt=a.title;img.loading='lazy';
+    d.appendChild(img);
+    d.onclick=e=>{e.stopPropagation();curModal=i;renderModal()};
+    inner.appendChild(d);
+  });
+  initDockDrag();
+}
+function updateDock(){
+  document.querySelectorAll('.dthumb').forEach((t,i)=>t.classList.toggle('on',i===curModal));
+}
+function initDockDrag(){
+  const dock=document.getElementById('dock');
+  const inner=document.getElementById('dock-inner');
+  let dragging=false,sx=0,sy=0,tx=0,ty=0;
+  inner.addEventListener('pointerdown',e=>{
+    if(e.target.closest('.dthumb'))return;
+    dragging=true;sx=e.clientX-tx;sy=e.clientY-ty;
+    inner.setPointerCapture(e.pointerId);e.preventDefault();
+  });
+  inner.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    tx=e.clientX-sx;ty=e.clientY-sy;
+    dock.style.transform=`translateX(calc(-50% + ${tx}px)) translateY(${ty}px)`;
+  });
+  inner.addEventListener('pointerup',()=>dragging=false);
+}
+
+/* ── LANGUAGE SWITCH ── */
+function setLang(lang){
+  document.getElementById('btn-en').classList.toggle('on',lang==='en');
+  document.getElementById('btn-id').classList.toggle('on',lang==='id');
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    const v=el.dataset[lang];
+    if(v!==undefined){if(['P','DIV','H2'].includes(el.tagName))el.innerHTML=v;else el.textContent=v}
+  });
+}
+</script>
+</body>
+</html>

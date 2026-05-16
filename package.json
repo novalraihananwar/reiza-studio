@@ -1,0 +1,8 @@
+{
+  "name": "jualan-website-rehan",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix \"reiza-studio\" run dev"
+  }
+}
