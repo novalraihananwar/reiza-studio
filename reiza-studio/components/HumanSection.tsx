@@ -6,35 +6,35 @@ import { Star, TrendingUp, Users, Award, Zap, Shield, Smartphone, Search } from 
 const features = [
   {
     icon: Zap,
-    label: 'Desain Kreatif',
-    desc: 'Setiap pixel dirancang dengan tujuan dan estetika tinggi',
+    label: 'Creative Design',
+    desc: 'Every pixel crafted with purpose and high aesthetic value',
     iconBg: 'bg-gradient-to-br from-rs-sky-400 to-rs-sky-500',
   },
   {
     icon: Shield,
-    label: 'Performa Cepat',
-    desc: 'Website dengan loading time < 2 detik di semua perangkat',
+    label: 'Fast Performance',
+    desc: 'Websites with loading time < 2 seconds on all devices',
     iconBg: 'bg-gradient-to-br from-rs-teal-400 to-rs-teal-500',
   },
   {
     icon: Smartphone,
     label: 'Fully Responsive',
-    desc: 'Tampil sempurna di desktop, tablet, dan mobile',
+    desc: 'Looks perfect on desktop, tablet, and mobile',
     iconBg: 'bg-gradient-to-br from-violet-400 to-purple-500',
   },
   {
     icon: Search,
     label: 'SEO Optimized',
-    desc: 'Dibangun untuk ranking tinggi di mesin pencari',
+    desc: 'Built to rank high on search engines',
     iconBg: 'bg-gradient-to-br from-rs-orange to-rs-coral',
   },
 ]
 
 const stats = [
-  { number: '120+', label: 'Website Dibuat' },
-  { number: '4.9 ★', label: 'Rating Klien' },
-  { number: '2+', label: 'Tahun Pengalaman' },
-  { number: '100%', label: 'Kepuasan Klien' },
+  { number: '120+', label: 'Websites Built' },
+  { number: '4.9 ★', label: 'Client Rating' },
+  { number: '2+', label: 'Years Experience' },
+  { number: '100%', label: 'Client Satisfaction' },
 ]
 
 export default function HumanSection() {
@@ -42,13 +42,10 @@ export default function HumanSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="tentang" ref={ref} className="py-20 lg:py-28 bg-[#F5F0EA] overflow-hidden">
+    <section id="about" ref={ref} className="py-20 lg:py-28 bg-[#F5F0EA] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Two-column layout */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16">
 
-          {/* LEFT: Image with floating cards */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -56,7 +53,6 @@ export default function HumanSection() {
             className="relative order-2 lg:order-1"
           >
             <div className="relative max-w-[500px] mx-auto">
-              {/* Watermark "STUDIO" text behind image */}
               <div
                 className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0"
                 aria-hidden="true"
@@ -68,13 +64,8 @@ export default function HumanSection() {
                   STUDIO
                 </span>
               </div>
-
-              {/* Background blur blob */}
               <div className="absolute -inset-8 bg-gradient-to-br from-rs-sky-100/80 to-rs-teal-400/20 rounded-full blur-3xl -z-10" />
-
-              {/* Image with dramatic frame */}
               <div className="relative rounded-4xl overflow-hidden shadow-large border-4 border-white/90 ring-4 ring-rs-sky-400/20 z-10">
-                {/* Colored accent border strip */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rs-sky-400 via-rs-teal-400 to-rs-sky-400 z-20" />
                 <img
                   src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=700&q=80"
@@ -84,7 +75,6 @@ export default function HumanSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-rs-navy/20 via-transparent to-transparent" />
               </div>
 
-              {/* Floating card: total clients */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
@@ -95,11 +85,10 @@ export default function HumanSection() {
                 </div>
                 <div>
                   <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">12,540</p>
-                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Total Klien</p>
+                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Total Clients</p>
                 </div>
               </motion.div>
 
-              {/* Floating card: projects */}
               <motion.div
                 animate={{ y: [0, -12, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
@@ -110,11 +99,10 @@ export default function HumanSection() {
                 </div>
                 <div>
                   <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">28</p>
-                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Project Aktif</p>
+                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Active Projects</p>
                 </div>
               </motion.div>
 
-              {/* Floating card: rating */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
@@ -130,10 +118,9 @@ export default function HumanSection() {
                   ))}
                 </div>
                 <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">4.9</p>
-                <p className="text-[9px] text-rs-slate font-inter mt-0.5">dari 200+ ulasan</p>
+                <p className="text-[9px] text-rs-slate font-inter mt-0.5">from 200+ reviews</p>
               </motion.div>
 
-              {/* Client avatars strip */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
@@ -154,34 +141,31 @@ export default function HumanSection() {
                     />
                   ))}
                 </div>
-                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">+98 bergabung</p>
+                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">+98 joined</p>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* RIGHT: Text content */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="space-y-6 order-1 lg:order-2"
           >
-            {/* Badge pill */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rs-peach/30 border border-rs-peach/50">
               <div className="w-2 h-2 rounded-full bg-rs-coral animate-pulse" />
-              <span className="text-xs font-semibold text-rs-coral font-jakarta">Tim Kreatif Kami</span>
+              <span className="text-xs font-semibold text-rs-coral font-jakarta">Our Creative Team</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-rs-navy font-jakarta leading-tight">
-              Bukan Sekadar Developer —<br />
-              Kami <span className="gradient-text-sky">Partner</span> Bisnismu
+              More Than Developers —<br />
+              We're Your <span className="gradient-text-sky">Business Partner</span>
             </h2>
 
             <p className="text-base text-rs-slate font-inter leading-relaxed max-w-lg">
-              Reiza Studio adalah studio digital kreatif yang memadukan keahlian teknis tinggi dengan sensibilitas desain modern. Kami tidak hanya membangun website — kami menciptakan pengalaman digital yang mendorong pertumbuhan bisnis nyata.
+              Reiza Studio is a creative digital studio combining deep technical expertise with modern design sensibility. We don't just build websites — we create digital experiences that drive real business growth.
             </p>
 
-            {/* Feature boxes with colored icon backgrounds */}
             <div className="grid sm:grid-cols-2 gap-4">
               {features.map((item) => {
                 const Icon = item.icon
@@ -210,12 +194,11 @@ export default function HumanSection() {
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
             >
-              Kenali Kami Lebih Dekat
+              Get to Know Us
             </motion.a>
           </motion.div>
         </div>
 
-        {/* BOTTOM: Stats row */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -237,7 +220,6 @@ export default function HumanSection() {
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   )

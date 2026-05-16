@@ -44,7 +44,7 @@ export default function CTASection() {
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
-    <section id="kontak" className="py-20 lg:py-28 bg-warm-white overflow-hidden">
+    <section id="contact" className="py-20 lg:py-28 bg-warm-white overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           ref={ref}
@@ -53,50 +53,38 @@ export default function CTASection() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative bg-mesh-cta rounded-5xl overflow-hidden p-12 sm:p-16 lg:p-24 text-center"
         >
-          {/* Animated background orbs */}
-          {/* Large blur — top left */}
           <motion.div
             animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
             transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute -top-16 -left-16 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"
           />
-          {/* Large blur — bottom right */}
           <motion.div
             animate={{ scale: [1, 1.12, 1], opacity: [0.08, 0.13, 0.08] }}
             transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             className="absolute -bottom-20 -right-12 w-96 h-96 rounded-full bg-white/8 blur-3xl pointer-events-none"
           />
-          {/* Mid blur — center */}
           <div className="absolute top-1/2 left-1/3 w-32 h-32 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-          {/* Small blur — top center */}
           <div className="absolute top-8 right-1/3 w-16 h-16 rounded-full bg-rs-peach/30 blur-xl pointer-events-none" />
-          {/* Mint pulse circle */}
           <motion.div
             animate={{ scale: [1, 1.4, 1] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
             className="absolute top-1/3 right-10 w-6 h-6 rounded-full bg-rs-mint/40 pointer-events-none"
           />
-
-          {/* Rotating square — top right */}
           <motion.div
             animate={{ y: [-6, 6, -6], rotate: [0, 45, 90, 45, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-10 left-10 w-10 h-10 rounded-2xl bg-white/20 pointer-events-none"
           />
-          {/* Floating square — bottom left area */}
           <motion.div
             animate={{ y: [6, -8, 6], rotate: [0, -8, 0] }}
             transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             className="absolute bottom-16 right-16 w-8 h-8 rounded-xl bg-white/25 pointer-events-none"
           />
-          {/* Small floating square — left side */}
           <motion.div
             animate={{ y: [4, -6, 4], rotate: [0, 12, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
             className="absolute top-1/2 left-8 w-5 h-5 rounded-lg bg-white/20 pointer-events-none"
           />
-
-          {/* Sparkle stars */}
           {[
             { top: '15%', left: '20%', delay: 0 },
             { top: '75%', left: '15%', delay: 1.2 },
@@ -114,9 +102,7 @@ export default function CTASection() {
             </motion.div>
           ))}
 
-          {/* Content */}
           <div className="relative z-10">
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -124,32 +110,29 @@ export default function CTASection() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-6"
             >
               <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              <span className="text-xs font-semibold text-white/90 font-jakarta">Hubungi Kami Sekarang</span>
+              <span className="text-xs font-semibold text-white/90 font-jakarta">Contact Us Now</span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-jakarta leading-tight mb-5 max-w-3xl mx-auto"
             >
-              Yuk, Wujudkan Ide<br />
-              Brilianmu Bersama<br />
-              <span className="text-white/80">Reiza Studio!</span>
+              Let's Bring Your<br />
+              Brilliant Idea to Life<br />
+              <span className="text-white/80">with Reiza Studio!</span>
             </motion.h2>
 
-            {/* Sub-text */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-white/80 text-base sm:text-lg font-inter max-w-xl mx-auto mb-10 leading-relaxed"
             >
-              Konsultasi gratis, no commitment. Ceritakan ide websitemu dan kami siap membuatnya jadi kenyataan.
+              Free consultation, no commitment. Tell us your website idea and we'll make it a reality.
             </motion.p>
 
-            {/* Social buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -175,7 +158,6 @@ export default function CTASection() {
               ))}
             </motion.div>
 
-            {/* Trust line */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
@@ -183,8 +165,8 @@ export default function CTASection() {
               className="flex flex-wrap items-center justify-center gap-3 sm:gap-6"
             >
               {[
-                'Respon dalam 1×24 jam',
-                'Konsultasi 100% Gratis',
+                'Response within 24 hours',
+                '100% Free Consultation',
                 'No Hidden Fee',
               ].map((item) => (
                 <div key={item} className="flex items-center gap-1.5">

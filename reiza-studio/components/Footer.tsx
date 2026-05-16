@@ -3,12 +3,12 @@ import { motion } from 'framer-motion'
 import { Mail, Instagram, Facebook, Twitter, Linkedin, Heart, ArrowRight } from 'lucide-react'
 
 const quickLinks = [
-  { label: 'Beranda', href: '#beranda' },
+  { label: 'Home', href: '#home' },
   { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Layanan', href: '#layanan' },
-  { label: 'Proses', href: '#proses' },
-  { label: 'Tentang Kami', href: '#tentang' },
-  { label: 'Kontak', href: '#kontak' },
+  { label: 'Services', href: '#services' },
+  { label: 'Process', href: '#process' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 const services = [
@@ -56,16 +56,12 @@ const socials = [
 export default function Footer() {
   return (
     <footer className="bg-rs-navy text-white">
-      {/* Top gradient divider line */}
       <div className="h-[2px] bg-gradient-to-r from-rs-sky-400 via-rs-teal-400 to-rs-sky-500" />
 
-      {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-          {/* Brand column */}
           <div className="lg:col-span-1">
-            {/* Logo */}
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-teal-400 flex items-center justify-center">
                 <span className="text-white font-bold text-sm font-jakarta">R</span>
@@ -76,10 +72,9 @@ export default function Footer() {
             </div>
 
             <p className="text-white/60 text-sm font-inter leading-relaxed mb-5">
-              Studio kreatif digital modern yang membantu bisnis tampil lebih profesional dan menarik melalui website berkualitas tinggi.
+              A modern creative digital studio helping businesses look more professional and compelling through high-quality websites.
             </p>
 
-            {/* Social links with distinct hover colors */}
             <div className="flex gap-2 mb-6">
               {socials.map((s) => {
                 const Icon = s.icon
@@ -98,7 +93,6 @@ export default function Footer() {
               })}
             </div>
 
-            {/* "Mulai Proyek" mini CTA card */}
             <motion.a
               href="https://wa.me/6281234567890"
               target="_blank"
@@ -108,8 +102,8 @@ export default function Footer() {
               whileTap={{ scale: 0.98 }}
             >
               <div>
-                <p className="text-xs font-bold text-white font-jakarta">Mulai Proyek Barumu</p>
-                <p className="text-[10px] text-white/50 font-inter">Konsultasi gratis sekarang</p>
+                <p className="text-xs font-bold text-white font-jakarta">Start Your New Project</p>
+                <p className="text-[10px] text-white/50 font-inter">Free consultation now</p>
               </div>
               <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-teal-400 flex items-center justify-center flex-shrink-0 group-hover:translate-x-0.5 transition-transform">
                 <ArrowRight size={13} className="text-white" />
@@ -117,7 +111,6 @@ export default function Footer() {
             </motion.a>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Menu</h4>
             <ul className="space-y-2.5">
@@ -135,14 +128,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
           <div>
-            <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Layanan</h4>
+            <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Services</h4>
             <ul className="space-y-2.5">
               {services.map((s) => (
                 <li key={s}>
                   <a
-                    href="#layanan"
+                    href="#services"
                     className="text-sm text-white/60 hover:text-rs-sky-400 transition-colors duration-200 font-inter flex items-center gap-2 group"
                   >
                     <span className="w-1 h-1 rounded-full bg-rs-sky-500/0 group-hover:bg-rs-sky-500 transition-colors duration-200" />
@@ -153,9 +145,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
-            <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Kontak</h4>
+            <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Contact</h4>
             <ul className="space-y-3">
               {[
                 { icon: '📱', text: '+62 812-3456-7890', href: 'https://wa.me/6281234567890' },
@@ -174,18 +165,15 @@ export default function Footer() {
               ))}
             </ul>
 
-            {/* Office hours info */}
             <div className="mt-6 p-3 rounded-2xl bg-white/5 border border-white/10">
-              <p className="text-[10px] text-white/40 font-inter uppercase tracking-wider mb-1">Jam Operasional</p>
-              <p className="text-xs text-white/70 font-inter font-medium">Sen – Sab: 09.00 – 21.00 WIB</p>
-              <p className="text-[10px] text-rs-teal-400 font-inter mt-1">● Online sekarang</p>
+              <p className="text-[10px] text-white/40 font-inter uppercase tracking-wider mb-1">Business Hours</p>
+              <p className="text-xs text-white/70 font-inter font-medium">Mon – Sat: 09:00 – 21:00 WIB</p>
+              <p className="text-[10px] text-rs-teal-400 font-inter mt-1">● Online now</p>
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-white/40 text-xs font-inter text-center sm:text-left">

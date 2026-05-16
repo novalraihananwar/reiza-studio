@@ -73,11 +73,11 @@ function TravelMockup() {
             <div className="absolute bottom-4 left-4">
               <p className="text-white/60 text-[8px] font-inter mb-0.5">✈ Explore Indonesia</p>
               <p className="text-white font-black text-2xl leading-none" style={{ fontFamily: 'Outfit, sans-serif' }}>Bali</p>
-              <p className="text-white/80 text-[9px] font-medium">1,240+ destinasi tersedia</p>
+              <p className="text-white/80 text-[9px] font-medium">1,240+ destinations available</p>
             </div>
             <div className="absolute bottom-4 right-3 bg-white/95 backdrop-blur-sm rounded-xl px-2.5 py-2 flex items-center gap-1.5 shadow-lg">
               <Search size={9} className="text-gray-400" />
-              <span className="text-[9px] text-gray-500 font-inter">Cari destinasi...</span>
+              <span className="text-[9px] text-gray-500 font-inter">Search destinations...</span>
             </div>
             {/* Rating badge on image */}
             <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 shadow-soft">
@@ -89,8 +89,8 @@ function TravelMockup() {
           {/* Destination cards */}
           <div className="p-4 pb-5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Outfit, sans-serif' }}>Populer Minggu Ini</p>
-              <span className="text-[8px] text-sky-500 font-semibold">Lihat Semua →</span>
+              <p className="text-[10px] font-bold text-gray-700" style={{ fontFamily: 'Outfit, sans-serif' }}>Popular This Week</p>
+              <span className="text-[8px] text-sky-500 font-semibold">View All →</span>
             </div>
             <div className="flex gap-2.5 overflow-hidden">
               {[
@@ -134,7 +134,7 @@ function TravelMockup() {
         </div>
         <div>
           <p className="text-lg font-black text-rs-navy font-jakarta leading-none">120+</p>
-          <p className="text-[9px] text-rs-slate font-inter">Website Dibuat</p>
+          <p className="text-[9px] text-rs-slate font-inter">Websites Built</p>
         </div>
       </motion.div>
 
@@ -148,7 +148,7 @@ function TravelMockup() {
           {[...Array(5)].map((_, i) => <Star key={i} size={10} className="text-amber-400 fill-amber-400" />)}
         </div>
         <p className="text-xl font-black text-rs-navy leading-none font-jakarta">4.9</p>
-        <p className="text-[8px] text-rs-slate font-inter mt-0.5">200+ ulasan</p>
+        <p className="text-[8px] text-rs-slate font-inter mt-0.5">200+ reviews</p>
       </motion.div>
 
       {/* 3: Bottom-left — Booking/launch */}
@@ -164,8 +164,8 @@ function TravelMockup() {
           <Calendar size={15} className="text-white" />
         </div>
         <div>
-          <p className="text-[9px] text-rs-slate font-inter">Estimasi Selesai</p>
-          <p className="text-xs font-bold text-rs-navy font-jakarta">14 Hari Kerja</p>
+          <p className="text-[9px] text-rs-slate font-inter">Est. Completion</p>
+          <p className="text-xs font-bold text-rs-navy font-jakarta">14 Working Days</p>
         </div>
       </motion.div>
 
@@ -202,7 +202,7 @@ export default function HeroSection() {
 
   return (
     <section
-      id="beranda"
+      id="home"
       className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden"
     >
       {/* ── BACKGROUND ── */}
@@ -273,7 +273,7 @@ export default function HeroSection() {
                 Creative Digital Studio
               </span>
               <span className="w-px h-4 bg-gray-300" />
-              <span className="text-sm text-rs-sky-500 font-bold font-jakarta">100+ Klien Puas</span>
+              <span className="text-sm text-rs-sky-500 font-bold font-jakarta">100+ Happy Clients</span>
             </motion.div>
 
             {/* EDITORIAL HEADLINE */}
@@ -284,7 +284,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.08, ease }}
                 className="text-xl sm:text-2xl font-medium text-rs-slate font-jakarta"
               >
-                Kami Desain
+                We Design
               </motion.p>
 
               <motion.div
@@ -296,7 +296,7 @@ export default function HeroSection() {
                   className="block font-black gradient-text-sky leading-[0.92] tracking-tight"
                   style={{ fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(64px, 10vw, 112px)' }}
                 >
-                  Website
+                  Websites
                 </span>
               </motion.div>
 
@@ -306,7 +306,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.5, delay: 0.26, ease }}
                 className="text-xl sm:text-2xl font-medium text-rs-slate font-jakarta pt-2"
               >
-                yang Bikin
+                That Make
               </motion.p>
 
               <motion.div
@@ -318,8 +318,8 @@ export default function HeroSection() {
                   className="block font-black text-rs-navy leading-tight tracking-tight"
                   style={{ fontFamily: 'Outfit, sans-serif', fontSize: 'clamp(36px, 5.5vw, 64px)' }}
                 >
-                  Bisnismu{' '}
-                  <span className="gradient-text-warm">Berkembang</span>
+                  Your Business{' '}
+                  <span className="gradient-text-warm">Grow</span>
                 </span>
               </motion.div>
             </div>
@@ -331,11 +331,11 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.48, ease }}
               className="text-base sm:text-lg text-rs-slate font-inter leading-relaxed max-w-lg"
             >
-              Studio kreatif digital yang membantu bisnis tampil lebih{' '}
-              <span className="text-rs-navy font-semibold">profesional</span>,{' '}
-              <span className="text-rs-sky-500 font-semibold">modern</span>, dan{' '}
-              <span className="text-rs-teal-500 font-semibold">menarik</span>{' '}
-              melalui website berkualitas tinggi. Hasil nyata, desain yang memukau.
+              A creative digital studio helping businesses look more{' '}
+              <span className="text-rs-navy font-semibold">professional</span>,{' '}
+              <span className="text-rs-sky-500 font-semibold">modern</span>, and{' '}
+              <span className="text-rs-teal-500 font-semibold">compelling</span>{' '}
+              through high-quality websites. Real results, stunning design.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -351,7 +351,7 @@ export default function HeroSection() {
                 whileHover={{ scale: 1.04, y: -3, boxShadow: '0 20px 50px rgba(14,165,233,0.4)' }}
                 whileTap={{ scale: 0.97 }}
               >
-                Lihat Portfolio
+                View Portfolio
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </motion.a>
               <motion.a
@@ -366,7 +366,7 @@ export default function HeroSection() {
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                   <path d="M12 0C5.373 0 0 5.373 0 12c0 2.134.558 4.133 1.535 5.871L.057 23.552a.5.5 0 0 0 .609.61l5.848-1.528A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.969 0-3.807-.538-5.38-1.47l-.38-.229-3.884 1.015.999-3.801-.25-.39A9.956 9.956 0 0 1 2 12c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z" />
                 </svg>
-                Konsultasi Gratis
+                Free Consultation
               </motion.a>
             </motion.div>
 
@@ -395,7 +395,7 @@ export default function HeroSection() {
                   <span className="text-xs font-bold text-rs-navy font-jakarta ml-1">4.9</span>
                 </div>
                 <p className="text-xs text-rs-slate font-inter">
-                  <span className="font-semibold text-rs-navy">100+ klien</span> puas di seluruh Indonesia
+                  <span className="font-semibold text-rs-navy">100+ clients</span> across Indonesia
                 </p>
               </div>
             </motion.div>

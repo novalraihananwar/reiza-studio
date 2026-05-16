@@ -327,11 +327,11 @@ export default function PortfolioSection() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rs-sky-100 border border-rs-sky-200/60 mb-4">
               <div className="w-2 h-2 rounded-full bg-rs-sky-500 animate-pulse" />
-              <span className="text-xs font-semibold text-rs-sky-600 font-jakarta">Portfolio Kami</span>
+              <span className="text-xs font-semibold text-rs-sky-600 font-jakarta">Our Portfolio</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-rs-navy font-jakarta leading-tight">
-              Karya Terbaik<br />
-              <span className="gradient-text-sky">Website Kami</span>
+              Our Best<br />
+              <span className="gradient-text-sky">Work</span>
             </h2>
           </motion.div>
 
@@ -342,7 +342,7 @@ export default function PortfolioSection() {
             transition={{ delay: 0.4 }}
             className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-rs-sky-500 hover:text-rs-sky-600 font-jakarta group"
           >
-            Lihat Semua Proyek
+            View All Projects
             <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
           </motion.a>
         </div>
@@ -384,7 +384,7 @@ export default function PortfolioSection() {
                   href={featured.link}
                   className="inline-flex items-center gap-1.5 text-sm font-bold text-rs-sky-500 hover:text-rs-sky-600 font-jakarta group/btn mt-4"
                 >
-                  Lihat Demo
+                  View Demo
                   <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                 </a>
               </div>
@@ -424,7 +424,7 @@ export default function PortfolioSection() {
                     href={p.link}
                     className="inline-flex items-center gap-1 text-xs font-bold text-rs-sky-500 hover:text-rs-sky-600 font-jakarta group/btn"
                   >
-                    Lihat Demo
+                    View Demo
                     <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform" />
                   </a>
                 </div>
@@ -444,7 +444,7 @@ export default function PortfolioSection() {
             href="#"
             className="flex items-center gap-1.5 text-sm font-semibold text-rs-sky-500 hover:text-rs-sky-600 font-jakarta group"
           >
-            Lihat Semua Proyek
+            View All Projects
             <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </motion.div>

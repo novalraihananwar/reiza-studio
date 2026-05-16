@@ -10,12 +10,12 @@ import CTASection from '@/components/CTASection'
 import Footer from '@/components/Footer'
 
 const marqueeItems = [
-  'WEBSITE PREMIUM',
-  'DESAIN MODERN',
+  'PREMIUM WEBSITES',
+  'MODERN DESIGN',
   'FULLY RESPONSIVE',
   'SEO OPTIMIZED',
   'FAST LOADING',
-  '100+ KLIEN PUAS',
+  '100+ HAPPY CLIENTS',
   'NEXT.JS & REACT',
   'FRAMER MOTION',
 ]

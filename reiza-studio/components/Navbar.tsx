@@ -4,12 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Zap } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Beranda', href: '#beranda' },
+  { label: 'Home', href: '#home' },
   { label: 'Portfolio', href: '#portfolio' },
-  { label: 'Layanan', href: '#layanan' },
-  { label: 'Proses', href: '#proses' },
-  { label: 'Tentang', href: '#tentang' },
-  { label: 'Kontak', href: '#kontak' },
+  { label: 'Services', href: '#services' },
+  { label: 'Process', href: '#process' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navbar() {
@@ -48,9 +48,8 @@ export default function Navbar() {
         >
           <div className={`max-w-7xl mx-auto px-4 sm:px-6 ${scrolled ? 'lg:px-5' : 'lg:px-8'}`}>
             <div className={`flex items-center justify-between transition-all duration-300 ${scrolled ? 'h-14' : 'h-16 lg:h-20'}`}>
-              {/* Logo */}
               <motion.a
-                href="#beranda"
+                href="#home"
                 className="flex items-center gap-2.5 flex-shrink-0"
                 whileHover={{ scale: 1.03 }}
               >
@@ -62,7 +61,6 @@ export default function Navbar() {
                 </span>
               </motion.a>
 
-              {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center gap-1">
                 {navLinks.map((link) => (
                   <a
@@ -75,7 +73,6 @@ export default function Navbar() {
                 ))}
               </nav>
 
-              {/* CTA */}
               <div className="flex items-center gap-2.5">
                 <motion.a
                   href="https://wa.me/6281234567890"
@@ -86,7 +83,7 @@ export default function Navbar() {
                   whileTap={{ scale: 0.97 }}
                 >
                   <Zap size={13} className="fill-white" />
-                  Konsultasi Gratis
+                  Free Consultation
                 </motion.a>
                 <button
                   onClick={() => setMobileOpen(!mobileOpen)}
@@ -100,7 +97,6 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -134,7 +130,7 @@ export default function Navbar() {
                 className="mt-2 flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-gradient-to-r from-rs-sky-500 to-rs-teal-400 text-white font-bold font-jakarta shadow-sky"
               >
                 <Zap size={14} className="fill-white" />
-                Konsultasi Gratis
+                Free Consultation
               </motion.a>
             </nav>
           </motion.div>
