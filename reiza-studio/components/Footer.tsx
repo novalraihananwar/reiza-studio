@@ -23,7 +23,7 @@ const services = [
 const socials = [
   {
     icon: Instagram,
-    href: 'https://instagram.com/reiza.studio',
+    href: 'https://www.instagram.com/reiza.studio?igsh=cTIyZXc0YzN3ODF1',
     label: 'Instagram',
     hoverColor: 'hover:bg-gradient-to-br hover:from-pink-500 hover:via-rose-500 hover:to-orange-400',
   },
