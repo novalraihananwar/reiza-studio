@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { ArrowRight, Star, MapPin, TrendingUp, Calendar, Zap, Search, Users } from 'lucide-react'
+import { ArrowRight, Star, MapPin, Calendar, Zap, Search, Shield, CheckCircle } from 'lucide-react'
 
 const ease = [0.22, 1, 0.36, 1]
 
@@ -81,8 +81,8 @@ function TravelMockup() {
             </div>
             {/* Rating badge on image */}
             <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1 shadow-soft">
-              <Star size={8} className="text-amber-400 fill-amber-400" />
-              <span className="text-[8px] font-bold text-gray-700">4.9</span>
+              <span className="text-amber-400 text-[8px]">★</span>
+              <span className="text-[8px] font-bold text-gray-700">4.8</span>
             </div>
           </div>
 
@@ -123,32 +123,33 @@ function TravelMockup() {
 
       {/* ── FLOATING BADGES ── */}
 
-      {/* 1: Top-right — Projects counter */}
+      {/* 1: Top-right — Fast Delivery */}
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
         className="absolute -top-5 -right-7 glass-card rounded-2xl px-4 py-3 shadow-medium flex items-center gap-3 z-10"
       >
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-sky-600 flex items-center justify-center flex-shrink-0">
-          <TrendingUp size={17} className="text-white" />
+          <Zap size={17} className="text-white fill-white" />
         </div>
         <div>
-          <p className="text-lg font-black text-rs-navy font-jakarta leading-none">120+</p>
-          <p className="text-[9px] text-rs-slate font-inter">Websites Built</p>
+          <p className="text-lg font-black text-rs-navy font-jakarta leading-none">14 Hari</p>
+          <p className="text-[9px] text-rs-slate font-inter">Est. Pengerjaan</p>
         </div>
       </motion.div>
 
-      {/* 2: Left-center — Star rating card */}
+      {/* 2: Left-center — Garansi */}
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
         className="absolute top-[30%] -left-10 glass-card rounded-2xl px-3.5 py-3 shadow-medium z-10"
       >
         <div className="flex items-center gap-1 mb-1">
-          {[...Array(5)].map((_, i) => <Star key={i} size={10} className="text-amber-400 fill-amber-400" />)}
+          <Shield size={10} className="text-rs-teal-500" />
+          <p className="text-[8px] font-bold text-rs-navy font-jakarta">Garansi</p>
         </div>
-        <p className="text-xl font-black text-rs-navy leading-none font-jakarta">4.9</p>
-        <p className="text-[8px] text-rs-slate font-inter mt-0.5">200+ reviews</p>
+        <p className="text-xl font-black text-rs-navy leading-none font-jakarta">30 Hari</p>
+        <p className="text-[8px] text-rs-slate font-inter mt-0.5">Revisi gratis</p>
       </motion.div>
 
       {/* 3: Bottom-left — Booking/launch */}
@@ -193,13 +194,6 @@ function TravelMockup() {
 }
 
 export default function HeroSection() {
-  const clients = [
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop&crop=face&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face&q=80',
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face&q=80',
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face&q=80',
-  ]
-
   return (
     <section
       id="home"
@@ -273,7 +267,7 @@ export default function HeroSection() {
                 Creative Digital Studio
               </span>
               <span className="w-px h-4 bg-gray-300" />
-              <span className="text-sm text-rs-sky-500 font-bold font-jakarta">100+ Happy Clients</span>
+              <span className="text-sm text-rs-sky-500 font-bold font-jakarta">Malang-based Studio</span>
             </motion.div>
 
             {/* EDITORIAL HEADLINE */}
@@ -355,7 +349,7 @@ export default function HeroSection() {
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </motion.a>
               <motion.a
-                href="https://wa.me/6281234567890"
+                href="https://wa.me/6285236933017"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl bg-white border border-gray-200 text-rs-navy font-bold font-jakarta text-sm shadow-soft hover:border-rs-sky-200 hover:shadow-medium transition-all"
@@ -370,34 +364,23 @@ export default function HeroSection() {
               </motion.a>
             </motion.div>
 
-            {/* Social proof */}
+            {/* Guarantee badges */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.7, ease }}
-              className="flex items-center gap-4"
+              className="flex flex-wrap gap-2"
             >
-              <div className="flex -space-x-2.5">
-                {clients.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt=""
-                    className="w-9 h-9 rounded-full border-2 border-white object-cover shadow-soft"
-                  />
-                ))}
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-0.5 mb-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={11} className="text-amber-400 fill-amber-400" />
-                  ))}
-                  <span className="text-xs font-bold text-rs-navy font-jakarta ml-1">4.9</span>
+              {[
+                { icon: CheckCircle, text: 'Revisi Sampai Puas' },
+                { icon: Zap, text: '14 Hari Pengerjaan' },
+                { icon: Shield, text: 'Garansi 30 Hari' },
+              ].map(({ icon: Icon, text }) => (
+                <div key={text} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-gray-200/80 shadow-soft backdrop-blur-sm">
+                  <Icon size={12} className="text-rs-teal-500 flex-shrink-0" />
+                  <span className="text-xs font-semibold text-rs-navy font-jakarta">{text}</span>
                 </div>
-                <p className="text-xs text-rs-slate font-inter">
-                  <span className="font-semibold text-rs-navy">100+ clients</span> across Indonesia
-                </p>
-              </div>
+              ))}
             </motion.div>
           </div>
 

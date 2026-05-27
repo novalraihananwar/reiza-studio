@@ -53,8 +53,8 @@ export default function Navbar() {
                 className="flex items-center gap-2.5 flex-shrink-0"
                 whileHover={{ scale: 1.03 }}
               >
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rs-sky-500 to-rs-teal-400 flex items-center justify-center shadow-sky">
-                  <span className="text-white font-black text-sm" style={{ fontFamily: 'Outfit, sans-serif' }}>R</span>
+                <div className="w-8 h-8 rounded-xl overflow-hidden flex-shrink-0 bg-black">
+                  <img src="/reiza-logo.jpeg" alt="Reiza Studio" className="w-full h-full object-cover" />
                 </div>
                 <span className="font-black text-rs-navy tracking-tight" style={{ fontFamily: 'Outfit, sans-serif', fontSize: scrolled ? '16px' : '18px' }}>
                   Reiza<span className="gradient-text-sky">Studio</span>
@@ -75,7 +75,7 @@ export default function Navbar() {
 
               <div className="flex items-center gap-2.5">
                 <motion.a
-                  href="https://wa.me/6281234567890"
+                  href="https://wa.me/6285236933017"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rs-sky-500 to-rs-teal-400 text-white text-sm font-bold font-jakarta shadow-sky btn-shine"
@@ -121,7 +121,7 @@ export default function Navbar() {
                 </motion.a>
               ))}
               <motion.a
-                href="https://wa.me/6281234567890"
+                href="https://wa.me/6285236933017"
                 target="_blank"
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 8 }}

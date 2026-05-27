@@ -23,7 +23,7 @@ const services = [
 const socials = [
   {
     icon: Instagram,
-    href: 'https://instagram.com/reizastudio',
+    href: 'https://instagram.com/reiza.studio',
     label: 'Instagram',
     hoverColor: 'hover:bg-gradient-to-br hover:from-pink-500 hover:via-rose-500 hover:to-orange-400',
   },
@@ -63,8 +63,8 @@ export default function Footer() {
 
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-teal-400 flex items-center justify-center">
-                <span className="text-white font-bold text-sm font-jakarta">R</span>
+              <div className="w-8 h-8 rounded-xl overflow-hidden ring-1 ring-white/15 flex-shrink-0">
+                <img src="/reiza-logo.jpeg" alt="Reiza Studio" className="w-full h-full object-cover" />
               </div>
               <span className="font-bold text-lg font-jakarta">
                 Reiza<span className="gradient-text-sky">Studio</span>
@@ -94,7 +94,7 @@ export default function Footer() {
             </div>
 
             <motion.a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/6285236933017"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between gap-3 bg-gradient-to-r from-rs-sky-500/20 to-rs-teal-500/20 border border-rs-sky-400/30 rounded-2xl px-4 py-3 group hover:border-rs-sky-400/60 transition-all duration-200"
@@ -149,9 +149,9 @@ export default function Footer() {
             <h4 className="text-sm font-bold text-white font-jakarta mb-4 tracking-wide uppercase opacity-60">Contact</h4>
             <ul className="space-y-3">
               {[
-                { icon: '📱', text: '+62 812-3456-7890', href: 'https://wa.me/6281234567890' },
+                { icon: '📱', text: '+62 852-3693-3017', href: 'https://wa.me/6285236933017' },
                 { icon: '✉️', text: 'hello@reizastudio.com', href: 'mailto:hello@reizastudio.com' },
-                { icon: '📍', text: 'Bali, Indonesia', href: '#' },
+                { icon: '📍', text: 'Malang, Indonesia', href: '#' },
               ].map((c) => (
                 <li key={c.text}>
                   <a
@@ -180,7 +180,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Reiza Studio. All rights reserved.
           </p>
           <p className="text-white/40 text-xs font-inter flex items-center gap-1">
-            Made with <Heart size={11} className="text-rs-coral fill-rs-coral mx-0.5" /> in Bali, Indonesia
+            Made with <Heart size={11} className="text-rs-coral fill-rs-coral mx-0.5" /> in Malang, Indonesia
           </p>
         </div>
       </div>

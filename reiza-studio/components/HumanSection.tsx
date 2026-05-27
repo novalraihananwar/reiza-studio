@@ -1,7 +1,7 @@
 'use client'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Star, TrendingUp, Users, Award, Zap, Shield, Smartphone, Search } from 'lucide-react'
+import { MapPin, Zap, Shield, Smartphone, Search, CheckCircle } from 'lucide-react'
 
 const features = [
   {
@@ -30,11 +30,11 @@ const features = [
   },
 ]
 
-const stats = [
-  { number: '120+', label: 'Websites Built' },
-  { number: '4.9 ★', label: 'Client Rating' },
-  { number: '2+', label: 'Years Experience' },
-  { number: '100%', label: 'Client Satisfaction' },
+const guarantees = [
+  { icon: '🔄', title: 'Revisi Sampai Puas', desc: 'Tanpa batasan revisi hingga kamu puas' },
+  { icon: '💬', title: 'Konsultasi Gratis', desc: 'Diskusi kebutuhanmu tanpa biaya' },
+  { icon: '⚡', title: '14 Hari Pengerjaan', desc: 'Estimasi rata-rata per project' },
+  { icon: '🛡️', title: 'Garansi 30 Hari', desc: 'Support & perbaikan pasca launch' },
 ]
 
 export default function HumanSection() {
@@ -81,11 +81,11 @@ export default function HumanSection() {
                 className="absolute -top-6 -right-4 sm:-right-10 glass-card rounded-2xl px-5 py-3.5 shadow-medium flex items-center gap-3 z-20"
               >
                 <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rs-sky-400 to-rs-sky-500 flex items-center justify-center shadow-sky">
-                  <Users size={18} className="text-white" />
+                  <MapPin size={18} className="text-white" />
                 </div>
                 <div>
-                  <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">12,540</p>
-                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Total Clients</p>
+                  <p className="text-base font-extrabold text-rs-navy font-jakarta leading-none">Malang</p>
+                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">East Java, Indonesia</p>
                 </div>
               </motion.div>
 
@@ -95,11 +95,11 @@ export default function HumanSection() {
                 className="absolute -bottom-6 -left-4 sm:-left-10 glass-card rounded-2xl px-5 py-3.5 shadow-medium flex items-center gap-3 z-20"
               >
                 <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-rs-teal-400 to-rs-teal-500 flex items-center justify-center shadow-teal">
-                  <TrendingUp size={18} className="text-white" />
+                  <Zap size={18} className="text-white fill-white" />
                 </div>
                 <div>
-                  <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">28</p>
-                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Active Projects</p>
+                  <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">14 Hari</p>
+                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Est. Pengerjaan</p>
                 </div>
               </motion.div>
 
@@ -109,16 +109,11 @@ export default function HumanSection() {
                 className="absolute top-1/2 -left-4 sm:-left-12 -translate-y-1/2 glass-card rounded-2xl px-4 py-3.5 shadow-medium z-20"
               >
                 <div className="flex items-center gap-2 mb-1.5">
-                  <Award size={14} className="text-amber-400" />
-                  <p className="text-xs font-bold text-rs-navy font-jakarta">Rating</p>
+                  <Shield size={14} className="text-rs-teal-500" />
+                  <p className="text-xs font-bold text-rs-navy font-jakarta">Garansi</p>
                 </div>
-                <div className="flex items-center gap-0.5 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={11} className="text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">4.9</p>
-                <p className="text-[9px] text-rs-slate font-inter mt-0.5">from 200+ reviews</p>
+                <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">30 Hari</p>
+                <p className="text-[9px] text-rs-slate font-inter mt-0.5">Revisi gratis</p>
               </motion.div>
 
               <motion.div
@@ -126,22 +121,10 @@ export default function HumanSection() {
                 transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
                 className="absolute bottom-14 right-0 sm:-right-8 glass-card rounded-2xl px-4 py-3 shadow-medium flex items-center gap-2.5 z-20"
               >
-                <div className="flex -space-x-2.5">
-                  {[
-                    'photo-1494790108377-be9c29b29330',
-                    'photo-1507003211169-0a1dd7228f2d',
-                    'photo-1438761681033-6461ffad8d80',
-                    'photo-1472099645785-5658abf4ff4e',
-                  ].map((id, i) => (
-                    <img
-                      key={i}
-                      src={`https://images.unsplash.com/${id}?w=36&h=36&fit=crop&crop=face&q=80`}
-                      alt=""
-                      className="w-8 h-8 rounded-full border-2 border-white object-cover"
-                    />
-                  ))}
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-teal-400 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle size={15} className="text-white" />
                 </div>
-                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">+98 joined</p>
+                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">Revisi Sampai Puas</p>
               </motion.div>
             </div>
           </motion.div>
@@ -187,7 +170,7 @@ export default function HumanSection() {
             </div>
 
             <motion.a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/6285236933017"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-gradient-to-r from-rs-sky-500 to-rs-teal-400 text-white font-semibold font-jakarta text-sm shadow-sky"
@@ -196,6 +179,16 @@ export default function HumanSection() {
             >
               Get to Know Us
             </motion.a>
+
+            {/* Tech Stack */}
+            <div className="pt-5 border-t border-gray-200/60">
+              <p className="text-xs text-rs-slate font-inter mb-3">Built with modern tech</p>
+              <div className="flex flex-wrap gap-2">
+                {['Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Framer Motion', 'Vercel'].map(tech => (
+                  <span key={tech} className="px-3 py-1.5 rounded-xl bg-white border border-gray-100 text-[11px] font-semibold text-gray-500 font-inter shadow-soft">{tech}</span>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
 
@@ -205,18 +198,17 @@ export default function HumanSection() {
           transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className="grid grid-cols-2 lg:grid-cols-4 gap-4"
         >
-          {stats.map((stat, i) => (
+          {guarantees.map((g, i) => (
             <motion.div
-              key={stat.label}
+              key={g.title}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.5 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-white rounded-3xl p-6 text-center border border-gray-100 shadow-soft hover:shadow-medium transition-shadow"
+              className="bg-white rounded-3xl p-5 border border-gray-100 shadow-soft hover:shadow-medium transition-shadow"
             >
-              <p className="text-2xl sm:text-3xl font-extrabold font-jakarta gradient-text-sky leading-none mb-2">
-                {stat.number}
-              </p>
-              <p className="text-xs sm:text-sm text-rs-slate font-inter font-medium">{stat.label}</p>
+              <span className="text-2xl mb-3 block">{g.icon}</span>
+              <p className="text-sm font-bold text-rs-navy font-jakarta leading-tight mb-1">{g.title}</p>
+              <p className="text-xs text-rs-slate font-inter leading-relaxed">{g.desc}</p>
             </motion.div>
           ))}
         </motion.div>
