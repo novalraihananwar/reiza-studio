@@ -23,13 +23,13 @@ const demos: Record<string, DemoEntry> = {
     tag: 'Travel & Wisata',
     gradient: 'from-sky-500 to-blue-600',
   },
-  kos: {
-    title: 'Management Kos — Kos Rehan',
-    desc: 'Sistem manajemen kos digital dengan dashboard admin lengkap',
-    iframeSrc: 'https://kos-rehan-prototype.netlify.app',
+  smartapt: {
+    title: 'SmartApt — Apartment Management System',
+    desc: 'Platform manajemen apartemen modern dengan QR tenant portal dan laporan keuangan real-time',
+    iframeSrc: 'https://kos-rehan-prototype.vercel.app',
     isStatic: true,
     tag: 'SaaS Dashboard',
-    gradient: 'from-violet-500 to-purple-600',
+    gradient: 'from-emerald-500 to-teal-600',
   },
   coffee: {
     title: 'POS Admin — Rehan Café',

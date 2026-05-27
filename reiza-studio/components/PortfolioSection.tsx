@@ -51,39 +51,61 @@ function TravelMockupCard() {
   )
 }
 
-function KosMockupCard() {
+function SmartAptMockupCard() {
+  const units = [
+    { id: 'A1-01', s: 'paid' }, { id: 'A1-02', s: 'pending' }, { id: 'A1-03', s: 'vacant' }, { id: 'A1-04', s: 'paid' },
+    { id: 'A2-01', s: 'paid' }, { id: 'A2-02', s: 'overdue' }, { id: 'A2-03', s: 'paid' }, { id: 'A2-04', s: 'paid' },
+  ] as const
+  const dot: Record<string, string> = {
+    paid: '#059669', pending: '#d97706', overdue: '#dc2626', vacant: '#6b7280',
+  }
+  const label: Record<string, string> = {
+    paid: 'Lunas', pending: 'Pending', overdue: 'Telat', vacant: 'Kosong',
+  }
   return (
-    <div className="w-full h-full bg-[#f8f6ff] rounded-2xl overflow-hidden flex">
-      <div className="w-10 bg-violet-600 flex flex-col items-center py-3 gap-3 flex-shrink-0">
-        {['H', 'K', 'P', 'R'].map((l, i) => (
-          <div key={i} className={`w-6 h-6 rounded-lg flex items-center justify-center text-[8px] font-bold ${i === 0 ? 'bg-white text-violet-600' : 'text-violet-300'}`}>{l}</div>
+    <div className="w-full h-full rounded-2xl overflow-hidden flex flex-col" style={{ background: '#151b27' }}>
+      {/* Top bar */}
+      <div className="flex items-center gap-1.5 px-3 py-2 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+        <div className="w-4 h-4 rounded-[4px] flex items-center justify-center text-white text-[7px] font-black" style={{ background: '#059669' }}>S</div>
+        <span className="text-[8px] font-bold text-white/80">SmartApt</span>
+        <div className="ml-auto flex items-center gap-1">
+          <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#059669' }} />
+          <span className="text-[6px] font-medium" style={{ color: '#059669' }}>Live</span>
+        </div>
+      </div>
+      {/* KPI row */}
+      <div className="grid grid-cols-3 gap-1.5 px-3 py-2 flex-shrink-0">
+        {[
+          { l: 'Total Unit', v: '248', c: 'rgba(255,255,255,0.9)' },
+          { l: 'Aktif', v: '231', c: '#34d399' },
+          { l: 'Pendapatan', v: '138jt', c: '#34d399' },
+        ].map(s => (
+          <div key={s.l} className="rounded-lg p-1.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
+            <p className="text-[5.5px] text-white/40 mb-0.5">{s.l}</p>
+            <p className="text-[10px] font-bold font-mono leading-none" style={{ color: s.c }}>{s.v}</p>
+          </div>
         ))}
       </div>
-      <div className="flex-1 p-3 overflow-hidden">
-        <p className="text-[9px] font-bold text-gray-700 mb-2">Dashboard Kos</p>
-        <div className="grid grid-cols-2 gap-1.5 mb-2">
-          {[
-            { l: 'Total Kamar', v: '24', color: 'text-violet-600', bg: 'bg-violet-50' },
-            { l: 'Terisi', v: '19', color: 'text-green-600', bg: 'bg-green-50' },
-            { l: 'Kosong', v: '5', color: 'text-amber-600', bg: 'bg-amber-50' },
-            { l: 'Pendapatan', v: '19jt', color: 'text-sky-600', bg: 'bg-sky-50' },
-          ].map(s => (
-            <div key={s.l} className={`${s.bg} rounded-xl p-2`}>
-              <p className="text-[6px] text-gray-500">{s.l}</p>
-              <p className={`text-sm font-bold ${s.color}`}>{s.v}</p>
-            </div>
-          ))}
-        </div>
-        <div className="bg-white rounded-xl p-2 shadow-sm">
-          <div className="flex justify-between items-center mb-1.5">
-            <p className="text-[7px] font-semibold text-gray-700">Data Kamar</p>
-            <div className="px-1.5 py-0.5 bg-green-100 rounded text-[6px] text-green-600 font-medium">● Live</div>
+      {/* Unit grid */}
+      <div className="flex-1 px-3 pb-3 overflow-hidden">
+        <div className="flex items-center justify-between mb-1.5">
+          <p className="text-[7px] font-semibold text-white/50">Status Unit</p>
+          <div className="flex gap-1">
+            {(['paid','pending','overdue','vacant'] as const).map(s => (
+              <div key={s} className="flex items-center gap-0.5">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: dot[s] }} />
+              </div>
+            ))}
           </div>
-          {[{ r: 'A1', n: 'Budi S.', s: 'Aktif' }, { r: 'A2', n: 'Siti R.', s: 'Aktif' }, { r: 'B1', n: '—', s: 'Kosong' }].map(row => (
-            <div key={row.r} className="flex justify-between items-center py-0.5 border-b border-gray-50 last:border-0">
-              <span className="text-[7px] font-bold text-gray-600">{row.r}</span>
-              <span className="text-[7px] text-gray-500">{row.n}</span>
-              <span className={`text-[6px] px-1.5 py-0.5 rounded-full font-medium ${row.s === 'Aktif' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>{row.s}</span>
+        </div>
+        <div className="grid grid-cols-4 gap-1">
+          {units.map(u => (
+            <div key={u.id} className="rounded-md p-1.5" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center justify-between mb-0.5">
+                <span className="text-[5.5px] font-mono text-white/50">{u.id}</span>
+                <div className="w-1 h-1 rounded-full" style={{ background: dot[u.s] }} />
+              </div>
+              <p className="text-[5px] font-medium" style={{ color: dot[u.s] }}>{label[u.s]}</p>
             </div>
           ))}
         </div>
@@ -358,17 +380,17 @@ const portfolios = [
     tech: ['Next.js', 'Tailwind', 'Framer Motion'],
   },
   {
-    title: 'Management Kos',
-    desc: 'Sistem manajemen kos digital lengkap dengan dashboard admin dan laporan keuangan.',
+    title: 'SmartApt',
+    desc: 'Platform manajemen apartemen modern dengan QR tenant portal, smart payment, dan laporan keuangan real-time.',
     tag: 'SaaS Dashboard',
-    color: 'from-violet-500 to-purple-600',
-    topBar: 'from-violet-400 to-purple-500',
-    hoverShadow: '0 20px 60px rgba(139,92,246,0.18)',
-    lightColor: 'bg-[#f8f6ff]',
-    Mockup: KosMockupCard,
-    link: '/demo/kos',
+    color: 'from-emerald-500 to-teal-600',
+    topBar: 'from-emerald-400 to-teal-500',
+    hoverShadow: '0 20px 60px rgba(5,150,105,0.2)',
+    lightColor: 'bg-[#151b27]',
+    Mockup: SmartAptMockupCard,
+    link: '/demo/smartapt',
     wide: false,
-    tech: ['React', 'Node.js', 'MySQL'],
+    tech: ['Next.js', 'Tailwind', 'Supabase'],
   },
   {
     title: 'POS Coffee Shop',
