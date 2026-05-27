@@ -178,7 +178,7 @@ export default function ServicesSection() {
           </p>
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <motion.a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/6285236933017"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-rs-sky-500 to-rs-teal-400 text-white font-bold font-jakarta text-sm shadow-sky btn-shine"

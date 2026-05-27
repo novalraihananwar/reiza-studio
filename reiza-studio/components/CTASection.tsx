@@ -12,14 +12,14 @@ const socials = [
       </svg>
     ),
     label: 'WhatsApp',
-    href: 'https://wa.me/6281234567890',
+    href: 'https://wa.me/6285236933017',
     bg: 'bg-green-500 hover:bg-green-600',
     shadow: 'hover:shadow-[0_8px_32px_rgba(34,197,94,0.45)]',
   },
   {
     icon: <Instagram size={20} />,
     label: 'Instagram',
-    href: 'https://instagram.com/reizastudio',
+    href: 'https://www.instagram.com/reiza.studio/',
     bg: 'bg-gradient-to-br from-pink-500 via-rose-500 to-orange-400 hover:from-pink-600 hover:via-rose-600 hover:to-orange-500',
     shadow: 'hover:shadow-[0_8px_32px_rgba(244,114,182,0.45)]',
   },
