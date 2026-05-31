@@ -54,7 +54,7 @@ function TravelMockup() {
               <span className="font-black text-[11px] text-sky-500" style={{ fontFamily: 'Outfit, sans-serif' }}>TravelBali</span>
             </div>
             <div className="hidden sm:flex gap-4 text-[9px] text-gray-400 font-inter">
-              <span>Destinasi</span><span>Hotel</span><span>Paket</span>
+              <span>Destinations</span><span>Hotels</span><span>Packages</span>
             </div>
             <div className="px-2.5 py-1 rounded-full bg-gradient-to-r from-sky-500 to-teal-400 text-white text-[8px] font-bold">
               Book Now
@@ -133,8 +133,8 @@ function TravelMockup() {
           <Zap size={17} className="text-white fill-white" />
         </div>
         <div>
-          <p className="text-lg font-black text-rs-navy font-jakarta leading-none">14 Hari</p>
-          <p className="text-[9px] text-rs-slate font-inter">Est. Pengerjaan</p>
+          <p className="text-lg font-black text-rs-navy font-jakarta leading-none">14 Days</p>
+          <p className="text-[9px] text-rs-slate font-inter">Est. Completion</p>
         </div>
       </motion.div>
 
@@ -146,10 +146,10 @@ function TravelMockup() {
       >
         <div className="flex items-center gap-1 mb-1">
           <Shield size={10} className="text-rs-teal-500" />
-          <p className="text-[8px] font-bold text-rs-navy font-jakarta">Garansi</p>
+          <p className="text-[8px] font-bold text-rs-navy font-jakarta">Guarantee</p>
         </div>
-        <p className="text-xl font-black text-rs-navy leading-none font-jakarta">30 Hari</p>
-        <p className="text-[8px] text-rs-slate font-inter mt-0.5">Revisi gratis</p>
+        <p className="text-xl font-black text-rs-navy leading-none font-jakarta">30 Days</p>
+        <p className="text-[8px] text-rs-slate font-inter mt-0.5">Free revisions</p>
       </motion.div>
 
       {/* 3: Bottom-left — Booking/launch */}
@@ -372,9 +372,9 @@ export default function HeroSection() {
               className="flex flex-wrap gap-2"
             >
               {[
-                { icon: CheckCircle, text: 'Revisi Sampai Puas' },
-                { icon: Zap, text: '14 Hari Pengerjaan' },
-                { icon: Shield, text: 'Garansi 30 Hari' },
+                { icon: CheckCircle, text: 'Unlimited Revisions' },
+                { icon: Zap, text: '14-Day Delivery' },
+                { icon: Shield, text: '30-Day Guarantee' },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 border border-gray-200/80 shadow-soft backdrop-blur-sm">
                   <Icon size={12} className="text-rs-teal-500 flex-shrink-0" />

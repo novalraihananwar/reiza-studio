@@ -39,8 +39,8 @@ function TravelMockupCard() {
         <div className="bg-white rounded-xl p-2 shadow-sm flex items-center gap-2">
           <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-sky-400 to-teal-400 flex-shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-[8px] font-semibold text-gray-700">Booking Cepat</p>
-            <p className="text-[7px] text-gray-400">1000+ destinasi</p>
+            <p className="text-[8px] font-semibold text-gray-700">Quick Booking</p>
+            <p className="text-[7px] text-gray-400">1000+ destinations</p>
           </div>
           <div className="px-2 py-0.5 bg-gradient-to-r from-sky-500 to-teal-400 rounded-lg flex-shrink-0">
             <span className="text-[7px] font-bold text-white">Book</span>
@@ -60,7 +60,7 @@ function SmartAptMockupCard() {
     paid: '#059669', pending: '#d97706', overdue: '#dc2626', vacant: '#6b7280',
   }
   const label: Record<string, string> = {
-    paid: 'Lunas', pending: 'Pending', overdue: 'Telat', vacant: 'Kosong',
+    paid: 'Paid', pending: 'Pending', overdue: 'Overdue', vacant: 'Vacant',
   }
   return (
     <div className="w-full h-full rounded-2xl overflow-hidden flex flex-col" style={{ background: '#151b27' }}>
@@ -77,8 +77,8 @@ function SmartAptMockupCard() {
       <div className="grid grid-cols-3 gap-1.5 px-3 py-2 flex-shrink-0">
         {[
           { l: 'Total Unit', v: '248', c: 'rgba(255,255,255,0.9)' },
-          { l: 'Aktif', v: '231', c: '#34d399' },
-          { l: 'Pendapatan', v: '138jt', c: '#34d399' },
+          { l: 'Active', v: '231', c: '#34d399' },
+          { l: 'Revenue', v: '138jt', c: '#34d399' },
         ].map(s => (
           <div key={s.l} className="rounded-lg p-1.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
             <p className="text-[5.5px] text-white/40 mb-0.5">{s.l}</p>
@@ -89,7 +89,7 @@ function SmartAptMockupCard() {
       {/* Unit grid */}
       <div className="flex-1 px-3 pb-3 overflow-hidden">
         <div className="flex items-center justify-between mb-1.5">
-          <p className="text-[7px] font-semibold text-white/50">Status Unit</p>
+          <p className="text-[7px] font-semibold text-white/50">Unit Status</p>
           <div className="flex gap-1">
             {(['paid','pending','overdue','vacant'] as const).map(s => (
               <div key={s} className="flex items-center gap-0.5">
@@ -150,7 +150,7 @@ function CoffeeMockupCard() {
         <div className="mt-auto bg-white rounded-xl p-2">
           <p className="text-[7px] text-gray-500">Total</p>
           <p className="text-[10px] font-bold text-amber-600">Rp 68.000</p>
-          <div className="mt-1 bg-amber-500 rounded-lg py-1 text-center text-[7px] text-white font-bold">Bayar</div>
+          <div className="mt-1 bg-amber-500 rounded-lg py-1 text-center text-[7px] text-white font-bold">Pay</div>
         </div>
       </div>
     </div>
@@ -164,12 +164,12 @@ function CoffeeCustomerMockupCard() {
         <div className="flex items-center justify-between mb-1.5">
           <div>
             <p className="text-[7px] font-semibold text-amber-700 tracking-widest uppercase">Rehan Cafe & Eatery</p>
-            <p className="text-[10px] font-bold text-amber-900">Meja 1</p>
+            <p className="text-[10px] font-bold text-amber-900">Table 1</p>
           </div>
           <span className="px-2 py-0.5 bg-amber-100 rounded-full text-[7px] font-semibold text-amber-700">Dine In</span>
         </div>
         <div className="flex gap-1 overflow-hidden">
-          {['✨ Semua', '☕ Kopi', '🍵 Non-Kopi', '🍝 Makanan'].map((c, i) => (
+          {['✨ All', '☕ Coffee', '🍵 Non-Coffee', '🍝 Food'].map((c, i) => (
             <div key={c} className={`flex-shrink-0 px-2 py-0.5 rounded-full text-[6px] font-semibold ${i === 0 ? 'bg-amber-800 text-white' : 'bg-amber-100 text-amber-700'}`}>{c}</div>
           ))}
         </div>
@@ -196,7 +196,7 @@ function CoffeeCustomerMockupCard() {
       <div className="bg-amber-800 mx-2 mb-2 rounded-xl px-3 py-1.5 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-1.5">
           <div className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-[7px] font-bold text-amber-800">2</div>
-          <p className="text-[7px] text-white font-semibold">Lihat Keranjang</p>
+          <p className="text-[7px] text-white font-semibold">View Cart</p>
         </div>
         <p className="text-[7px] font-bold text-amber-200">Rp 57.000</p>
       </div>
@@ -213,10 +213,10 @@ function PropertyMockupCard() {
             <div className="w-5 h-5 rounded-lg bg-teal-500 flex items-center justify-center">
               <span className="text-[7px] text-white font-bold">P</span>
             </div>
-            <p className="text-[9px] font-bold text-gray-700">Rehan Properti</p>
+            <p className="text-[9px] font-bold text-gray-700">Rehan Property</p>
           </div>
           <div className="flex gap-1">
-            {['Rumah', 'Apt.', 'Tanah'].map(t => (
+            {['House', 'Apt.', 'Land'].map(t => (
               <div key={t} className="px-1.5 py-0.5 bg-teal-100 rounded-full text-[6px] font-medium text-teal-600">{t}</div>
             ))}
           </div>
@@ -225,9 +225,9 @@ function PropertyMockupCard() {
           <div className="w-3 h-3 rounded-full bg-teal-200 flex items-center justify-center flex-shrink-0">
             <div className="w-1.5 h-1.5 rounded-full bg-teal-500" />
           </div>
-          <span className="text-[8px] text-gray-400 flex-1">Cari lokasi properti...</span>
+          <span className="text-[8px] text-gray-400 flex-1">Search property location...</span>
           <div className="px-2 py-0.5 bg-teal-500 rounded-lg flex-shrink-0">
-            <span className="text-[6px] text-white font-bold">Cari</span>
+            <span className="text-[6px] text-white font-bold">Search</span>
           </div>
         </div>
       </div>
@@ -242,7 +242,7 @@ function PropertyMockupCard() {
               <p className="text-[8px] font-bold text-gray-700 truncate">{p.name}</p>
               <p className="text-[8px] font-bold text-teal-600 mt-0.5">Rp {p.price}</p>
               <div className="flex gap-1 mt-1">
-                <span className="px-1 py-0.5 bg-teal-50 rounded text-[6px] text-teal-600">{p.bed} KT</span>
+                <span className="px-1 py-0.5 bg-teal-50 rounded text-[6px] text-teal-600">{p.bed} BR</span>
                 <span className="px-1 py-0.5 bg-emerald-50 rounded text-[6px] text-emerald-600">{p.type}</span>
               </div>
             </div>
@@ -367,9 +367,9 @@ function DigitalArtistMockupCard() {
 
 const portfolios = [
   {
-    title: 'Website Travel',
-    desc: 'Platform booking travel modern dengan UI yang immersive dan animasi smooth.',
-    tag: 'Travel & Wisata',
+    title: 'Travel Website',
+    desc: 'Modern travel booking platform with immersive UI and smooth animations.',
+    tag: 'Travel & Tourism',
     color: 'from-sky-400 to-blue-500',
     topBar: 'from-sky-400 to-teal-400',
     hoverShadow: '0 20px 60px rgba(14,165,233,0.18)',
@@ -381,7 +381,7 @@ const portfolios = [
   },
   {
     title: 'SmartApt',
-    desc: 'Platform manajemen apartemen modern dengan QR tenant portal, smart payment, dan laporan keuangan real-time.',
+    desc: 'Modern apartment management platform with QR tenant portal, smart payment, and real-time financial reports.',
     tag: 'SaaS Dashboard',
     color: 'from-emerald-500 to-teal-600',
     topBar: 'from-emerald-400 to-teal-500',
@@ -394,7 +394,7 @@ const portfolios = [
   },
   {
     title: 'POS Coffee Shop',
-    desc: 'Dashboard admin untuk kelola order masuk, status meja, inventori, dan laporan real-time.',
+    desc: 'Admin dashboard to manage incoming orders, table status, inventory, and real-time reports.',
     tag: 'POS Admin',
     color: 'from-amber-500 to-orange-500',
     topBar: 'from-amber-400 to-orange-400',
@@ -407,7 +407,7 @@ const portfolios = [
   },
   {
     title: 'Menu Digital — Customer',
-    desc: 'Tampilan pelanggan via QR code di meja. Pesan, bayar, dan tracking pesanan langsung dari HP.',
+    desc: 'Customer view via QR code at the table. Order, pay, and track orders directly from their phone.',
     tag: 'Customer View',
     color: 'from-orange-400 to-amber-500',
     topBar: 'from-orange-400 to-amber-400',
@@ -419,8 +419,8 @@ const portfolios = [
     tech: ['QR Code', 'PWA', 'Tailwind'],
   },
   {
-    title: 'Website Properti',
-    desc: 'Portal properti premium dengan fitur pencarian canggih dan galeri foto HD.',
+    title: 'Property Website',
+    desc: 'Premium property portal with advanced search features and HD photo gallery.',
     tag: 'Company Profile',
     color: 'from-teal-500 to-emerald-500',
     topBar: 'from-teal-400 to-emerald-400',
@@ -433,7 +433,7 @@ const portfolios = [
   },
   {
     title: 'Digital Artist Portfolio',
-    desc: 'Website portfolio kreatif dengan gallery artwork interaktif dan animasi memukau.',
+    desc: 'Creative portfolio website with interactive artwork gallery and stunning animations.',
     tag: 'Creative Portfolio',
     color: 'from-violet-500 to-pink-500',
     topBar: 'from-violet-500 to-pink-500',

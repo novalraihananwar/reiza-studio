@@ -31,10 +31,10 @@ const features = [
 ]
 
 const guarantees = [
-  { icon: '🔄', title: 'Revisi Sampai Puas', desc: 'Tanpa batasan revisi hingga kamu puas' },
-  { icon: '💬', title: 'Konsultasi Gratis', desc: 'Diskusi kebutuhanmu tanpa biaya' },
-  { icon: '⚡', title: '14 Hari Pengerjaan', desc: 'Estimasi rata-rata per project' },
-  { icon: '🛡️', title: 'Garansi 30 Hari', desc: 'Support & perbaikan pasca launch' },
+  { icon: '🔄', title: 'Unlimited Revisions', desc: 'Revisions until you are fully satisfied' },
+  { icon: '💬', title: 'Free Consultation', desc: 'Discuss your needs at no charge' },
+  { icon: '⚡', title: '14-Day Delivery', desc: 'Average estimate per project' },
+  { icon: '🛡️', title: '30-Day Guarantee', desc: 'Support & fixes after launch' },
 ]
 
 export default function HumanSection() {
@@ -98,8 +98,8 @@ export default function HumanSection() {
                   <Zap size={18} className="text-white fill-white" />
                 </div>
                 <div>
-                  <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">14 Hari</p>
-                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Est. Pengerjaan</p>
+                  <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">14 Days</p>
+                  <p className="text-[10px] text-rs-slate font-inter mt-0.5">Est. Completion</p>
                 </div>
               </motion.div>
 
@@ -110,10 +110,10 @@ export default function HumanSection() {
               >
                 <div className="flex items-center gap-2 mb-1.5">
                   <Shield size={14} className="text-rs-teal-500" />
-                  <p className="text-xs font-bold text-rs-navy font-jakarta">Garansi</p>
+                  <p className="text-xs font-bold text-rs-navy font-jakarta">Guarantee</p>
                 </div>
-                <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">30 Hari</p>
-                <p className="text-[9px] text-rs-slate font-inter mt-0.5">Revisi gratis</p>
+                <p className="text-xl font-extrabold text-rs-navy font-jakarta leading-none">30 Days</p>
+                <p className="text-[9px] text-rs-slate font-inter mt-0.5">Free revisions</p>
               </motion.div>
 
               <motion.div
@@ -124,7 +124,7 @@ export default function HumanSection() {
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rs-sky-400 to-rs-teal-400 flex items-center justify-center flex-shrink-0">
                   <CheckCircle size={15} className="text-white" />
                 </div>
-                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">Revisi Sampai Puas</p>
+                <p className="text-[10px] font-semibold text-rs-navy font-jakarta">Unlimited Revisions</p>
               </motion.div>
             </div>
           </motion.div>
