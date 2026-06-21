@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Studio kreatif digital modern yang membantu bisnis tampil lebih profesional, modern, dan menarik melalui website berkualitas tinggi.',
   keywords: ['website', 'desain website', 'digital studio', 'landing page', 'web development', 'UI/UX'],
   icons: {
-    icon: '/reiza-logo.jpeg',
+    icon: '/favicon.svg',
   },
   openGraph: {
     title: 'Reiza Studio — Creative Digital Studio',
